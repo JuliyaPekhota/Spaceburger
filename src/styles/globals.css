@@ -1,0 +1,57 @@
+@font-face {
+  font-family: 'JetBrainsMono';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/JetBrainsMono-Regular.woff') format("woff");
+}
+
+@font-face {
+  font-family: 'Iceland';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/Iceland-Regular.woff') format("woff");
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html,
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: #131316;
+  font-family: 'JetBrainsMono', Arial, sans-serif;
+  font-size: 16px;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul { 
+  padding: 0;
+  margin: 0;
+}
+
+ul li {
+  list-style-type: none;
+}
+
+main {
+  width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  gap: 40px;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 40px;
+  color: #F2F2F3;
+}
+

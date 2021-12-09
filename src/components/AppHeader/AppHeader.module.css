@@ -1,0 +1,38 @@
+.header {
+    width: 1920px;
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    height: 88px;
+    display: flex;
+    background: #1C1C21;
+    box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+}
+
+.navigation {
+    width: 1280px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.content {
+    display: flex;
+    align-items: center;
+}
+.links, .burgerLink, .listLink, .loginLink {
+    display: flex;
+}
+.burgerLink {
+    display: flex;
+}
+.burgerLink span {
+    color: #F2F2F3;
+}
+
+.listLink span, .loginLink span {
+    color:#8585AD;
+}
+.logo {
+    justify-content: center;
+    display: flex;
+    flex: 1 1 auto;
+}

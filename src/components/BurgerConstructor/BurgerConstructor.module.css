@@ -1,0 +1,46 @@
+.root {
+    width: 600px;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.content>div:nth-child(1), .content>div:nth-child(3) {
+    max-width: 100%;
+    width: 536px;
+    margin: 0 16px 0 48px;
+}
+.contentInScroll>div {
+    scroll-behavior: smooth;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.contentInScroll>div>div>div {
+    max-width: 100%;
+    margin-left: 32px;
+    width: 536px;
+}
+.unLock {
+    position: relative;
+    margin: 0 16px 0 16px;
+}
+.unLock>svg {
+    position: absolute;
+    left: 0;
+    top: 37%;
+}
+.totalPrice {
+    display:flex;
+    justify-content: right;
+    gap: 40px;
+}
+.price {
+    font-family: 'Iceland';
+    font-size: 48px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #F2F2F3;
+}
