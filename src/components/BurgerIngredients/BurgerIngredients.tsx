@@ -1,14 +1,13 @@
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState } from 'react';
 import { Counter, Tab, CurrencyIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
-import  data  from "../../utils/data.js";
 import s from './BurgerIngredients.module.css';
 import { Scrollbars } from 'react-custom-scrollbars';
-import PropTypes from 'prop-types';
+import { IDataBurgers } from '../../utils/types';
 
-const BurgerIngredients = () => {
-    const buns = data.filter(card => card.type === 'bun');
-    const sauces = data.filter(card => card.type === 'sauce');
-    const mains = data.filter(card => card.type === 'main');
+const BurgerIngredients = (props : IDataBurgers) => {
+    const buns = props.burgers.filter(card => card.type === 'bun');
+    const sauces = props.burgers.filter(card => card.type === 'sauce');
+    const mains = props.burgers.filter(card => card.type === 'main');
     const bunRef = useRef<HTMLDivElement>(null);
     const sauceRef = useRef<HTMLDivElement>(null);
     const mainRef = useRef<HTMLDivElement>(null);
@@ -29,7 +28,7 @@ const BurgerIngredients = () => {
         }
      }
 
-     const handleScroll = useCallback(() => {
+     const handleScroll = () => {
         const scroll = scrollBar?.current?.getScrollTop();
         const scrollBottom = scroll ? scroll + (231/2) : 0;
         const pointSauce = (sauceRef && sauceRef.current) ? sauceRef.current.offsetTop  : 0;
@@ -42,8 +41,7 @@ const BurgerIngredients = () => {
         } else {
             setCurrent('bun');
         }
-     }, [current],
-     );
+     }
 
     const Tabs = () => {
         return (
@@ -61,17 +59,12 @@ const BurgerIngredients = () => {
             </nav>
 
             <Scrollbars 
-                renderTrackVertical={({style, ...props}) =>
-                          <div {...props} className={s.scrollTrackVertical} style={{...style, right: '2px', bottom: '2px', top: '2px', backgroundColor: '#2F2F37', borderRadius: '0', width: '8px'}}/>
-                        } 
-                renderThumbVertical={({style, ...props}) =>
-                          <div {...props} className={s.scrollThumbVertical} style={{...style, borderRadius: '0', backgroundColor: '#8585AD'}}/>
-                        }
+                renderTrackVertical={({...props}) => <div {...props} className={s.scrollTrackVertical}/>} 
+                renderThumbVertical={({...props}) => <div {...props} className={s.scrollThumbVertical}/>}
                 ref={scrollBar} 
-                style={{height: 716}} 
-                className={s.contentInScroll} 
+                className={s.contentInScroll}
                 onScroll={handleScroll}
-            >    
+            >
                 <div ref={bunRef}>
                 <h2>Булки</h2>
                 <section className={`${s.ingredients} mt-6 mb-10 mr-4 ml-4`}>
@@ -131,12 +124,5 @@ const BurgerIngredients = () => {
         </section>
     )
 }
-
-BurgerIngredients.propTypes = PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    _id: PropTypes.string.isRequired
-  }).isRequired;
   
 export default BurgerIngredients; 

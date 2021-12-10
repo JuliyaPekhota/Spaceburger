@@ -11,6 +11,10 @@
     width: 536px;
     margin: 0 16px 0 48px;
 }
+.contentInScroll {
+    height: 464px !important;
+}
+
 .contentInScroll>div {
     scroll-behavior: smooth;
     display: flex;
@@ -22,6 +26,19 @@
     margin-left: 32px;
     width: 536px;
 }
+.scrollTrackVertical {
+    right: 2px;
+    bottom: 2px;
+    top: 2px;
+    background-color: #2F2F37;
+    border-radius: 0;
+    width: 8px !important;
+}
+.scrollThumbVertical {
+    background-color: #8585AD;
+    border-radius: 0;
+}
+
 .unLock {
     position: relative;
     margin: 0 16px 0 16px;

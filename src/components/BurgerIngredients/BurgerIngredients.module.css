@@ -7,10 +7,24 @@
 .tabs>div {
     flex-grow: 1;
 }
+.contentInScroll {
+    height: 716px !important;
+}
 .contentInScroll>div {
     scroll-behavior: smooth;
 }
-
+.scrollTrackVertical {
+    right: 2px;
+    bottom: 2px;
+    top: 2px;
+    background-color: #2F2F37;
+    border-radius: 0;
+    width: 8px !important;
+}
+.scrollThumbVertical {
+    background-color: #8585AD;
+    border-radius: 0;
+}
 .ingredients {
     display: grid;
     gap: calc(var(--offset-base-size) * 8) calc(var(--offset-base-size) * 4);
