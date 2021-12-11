@@ -1,0 +1,12 @@
+.description {
+    display: flex;
+    gap: 20px;
+}
+.description div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.imageCard {
+    width: 480px;
+}

@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react';
-import { Counter, Tab, CurrencyIcon, CloseIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
+import { Counter, Tab, CurrencyIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './BurgerIngredients.module.css';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { IDataBurgers } from '../../utils/types';
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import Modal from '../../components/Modal/Modal';
 
 const BurgerIngredients = (props : IDataBurgers) => {
@@ -54,36 +55,9 @@ const BurgerIngredients = (props : IDataBurgers) => {
     
     const currentCard = props.burgers.filter(card => card._id === idCard);
     const modal = showModal ? (
-        <Modal>
-           <>
-            <div className={`${s.close} pt-15 pr-10`} onClick={handleCloseModal}>
-              <CloseIcon type="primary" />
-            </div>
-           <section className='pt-10 pl-10 pb-15 pr-10'>
-               <h1 className={`${s.head} text text_type_main-large`}>Детали ингредиента</h1>
-               <img className={`${s.imageCard} pr-5 pl-5`} src={currentCard[0].image} alt={currentCard[0].name}/>
-               <p className='text text_type_main-medium mt-4 mt-8'>{currentCard[0].name}</p>
-               <div className={`${s.description} mt-8`}>
-                    <div>
-                        <span className='text text_type_main-default text_color_inactive pb-2'>Калории,ккал</span>
-                        <span className='text text_type_digits-default text_color_inactive'>{currentCard[0].calories}</span>
-                    </div>
-                    <div>
-                        <span className='text text_type_main-default text_color_inactive pb-2'>Белки, г</span>
-                        <span className='text text_type_digits-default text_color_inactive'>{currentCard[0].proteins}</span>
-                    </div>
-                    <div>
-                        <span className='text text_type_main-default text_color_inactive pb-2'>Жиры, г</span>
-                        <span className='text text_type_digits-default text_color_inactive'>{currentCard[0].fat}</span>
-                    </div>
-                    <div>
-                        <span className='text text_type_main-default text_color_inactive pb-2'>Углеводы, г</span>
-                        <span className='text text_type_digits-default text_color_inactive'>{currentCard[0].carbohydrates}</span>
-                    </div>
-               </div>
-           </section>
-           </>
-       </Modal>
+        <Modal header="Детали ингредиента" onClose={handleCloseModal}>
+           <IngredientDetails cardData={currentCard} />
+        </Modal>
     ) : null;
 
     const Tabs = () => {
