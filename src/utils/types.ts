@@ -8,4 +8,8 @@ export interface IDataBurgers {
     price: number;
     image: string;
     _id: string;
+    proteins: number;
+    fat: number;
+    carbohydrates: number;
+    calories: number;
   }

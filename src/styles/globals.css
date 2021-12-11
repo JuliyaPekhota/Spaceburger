@@ -26,6 +26,7 @@ body {
   background-color: #131316;
   font-family: 'JetBrainsMono', Arial, sans-serif;
   font-size: 16px;
+  color: #F2F2F3;
 }
 
 a {
@@ -46,12 +47,5 @@ main {
   margin: 0 auto;
   display: flex;
   gap: 40px;
-}
-
-h1 {
-  font-weight: bold;
-  font-size: 36px;
-  line-height: 40px;
-  color: #F2F2F3;
 }
 
