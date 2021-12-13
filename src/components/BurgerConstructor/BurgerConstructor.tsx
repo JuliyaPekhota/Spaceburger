@@ -17,14 +17,16 @@ const BurgerConstructor = (props: IDataIngredients) => {
 
   const bunTopBottom = (position: string) => {
     return (
-      <ConstructorElement
-        type={position === 'top' ? TypeElement.Top : TypeElement.Bottom}
-        isLocked
-        text={`${props.ingredients[0].name} (${position === 'top' ? 'верх' : 'низ'})`}
-        price={props.ingredients[0].price}
-        thumbnail={props.ingredients[0].image}
-        key={`${position}${props.ingredients[0]._id}`}
-      />
+      <div className={s.bunTopBottom}>
+        <ConstructorElement
+          type={position === 'top' ? TypeElement.Top : TypeElement.Bottom}
+          isLocked
+          text={`${props.ingredients[0].name} (${position === 'top' ? 'верх' : 'низ'})`}
+          price={props.ingredients[0].price}
+          thumbnail={props.ingredients[0].image}
+          key={`${position}${props.ingredients[0]._id}`}
+        />
+      </div>
     )
   }
 

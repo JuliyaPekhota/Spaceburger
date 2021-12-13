@@ -6,7 +6,7 @@
     flex-direction: column;
     gap: 16px;
 }
-.content>div:nth-child(1), .content>div:nth-child(3) {
+.bunTopBottom div {
     max-width: 100%;
     width: 536px;
     margin: 0 16px 0 48px;
@@ -22,7 +22,7 @@
     left: 0;
     top: 37%;
 }
-.fillings>div {
+.fillings div {
     max-width: 100%;
     margin-left: 32px;
     width: 536px;
