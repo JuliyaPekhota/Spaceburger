@@ -12,10 +12,10 @@ enum TypeElement {
 }
 
 const BurgerConstructor = (props: IDataIngredients) => {
-  const unLockData = props.ingredients.filter((card : any) => card.type !== 'bun');
+  const fillings = props.ingredients.filter((card : any) => card.type !== 'bun');
   const [showModal, setshowModal] = useState(false);
 
-  const lockElement = (position: string) => {
+  const bunTopBottom = (position: string) => {
     return (
       <ConstructorElement
         type={position === 'top' ? TypeElement.Top : TypeElement.Bottom}
@@ -32,7 +32,7 @@ const BurgerConstructor = (props: IDataIngredients) => {
     return (
       <>
       <div className={`${s.content} mb-10`}>
-        {lockElement('top')}
+        {bunTopBottom('top')}
         <Scrollbars 
           renderTrackVertical={({...props}) =>
               <div {...props} className={s.scrollTrackVertical}/>
@@ -41,9 +41,9 @@ const BurgerConstructor = (props: IDataIngredients) => {
               <div {...props} className={s.scrollThumbVertical}/>
             }
           className={`${s.contentInScroll}`}>
-            {unLockData.map((card : any) => {
+            {fillings.map((card : any) => {
               return (
-                <div key={card._id} className={`${card.type !== 'bun' ? s.unLock : ""}`}>
+                <div key={card._id} className={`${s.fillings} mb-4 mr-4 ml-4`}>
                 {card.type !== 'bun' && (<DragIcon type="primary" />)}
                 <ConstructorElement
                   isLocked={card.type === 'bun'}
@@ -55,10 +55,10 @@ const BurgerConstructor = (props: IDataIngredients) => {
               )
             })}
         </Scrollbars>
-        {lockElement('bottom')}
+        {bunTopBottom('bottom')}
       </div>  
       <div className={`${s.totalPrice} mb-10`}>
-        <span className={`${s.price}`}>600 <CurrencyIcon type="primary" /></span>
+        <span className={`${s.price} text text_type_digits-medium`}>600 <CurrencyIcon type="primary" /></span>
         <Button type="primary" size="medium" onClick={toggleModal}>
           Оформить заказ
         </Button>

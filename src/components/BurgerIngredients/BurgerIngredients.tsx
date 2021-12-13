@@ -6,6 +6,8 @@ import { IDataIngredients } from '../../utils/types';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import Modal from '../../components/Modal/Modal';
 
+const THUMB_HEIGHT = 230;
+
 const BurgerIngredients = (props : IDataIngredients) => {
     const ingredients = props.ingredients;
     const sections = ['bun', 'sauce', 'main'];
@@ -15,8 +17,8 @@ const BurgerIngredients = (props : IDataIngredients) => {
     const scrollBar = useRef<Scrollbars>(null);
 
     const [current, setCurrent] = useState('bun');
+    const [currentId, setCurrentId] = useState('');
     const [showModal, setshowModal] = useState(false);
-    const [idCard, setIdCard] = useState('');
 
     const handleClickTab = (value : string) => {
         setCurrent(value);
@@ -32,14 +34,14 @@ const BurgerIngredients = (props : IDataIngredients) => {
      }
 
      const handleScroll = () => {
-        const scroll = scrollBar?.current?.getScrollTop();
-        const bottomPointOfScroll = scroll ? scroll + (231/2) : 0;
-        const saucesMenuDot = (sauceRef && sauceRef.current) ? sauceRef.current.offsetTop  : 0;
-        const mainMenuDot = (mainRef && mainRef.current) ? mainRef.current.offsetTop : 0;
-
-        if (bottomPointOfScroll >= mainMenuDot) {
+        const scroll = scrollBar?.current?.getScrollTop() || 0;
+        const bottomPointOfScroll = scroll ? scroll + THUMB_HEIGHT : 0;
+        const saucesPoint = sauceRef?.current?.offsetTop || 0;
+        const mainPoint = mainRef?.current?.offsetTop || 0;
+        
+        if (bottomPointOfScroll >= mainPoint) {
             setCurrent('main');
-        } else if (bottomPointOfScroll >= saucesMenuDot) {
+        } else if (bottomPointOfScroll >= saucesPoint) {
             setCurrent('sauce');
         } else {
             setCurrent('bun');
@@ -47,12 +49,12 @@ const BurgerIngredients = (props : IDataIngredients) => {
      }
 
     const handleOpenModal = (id : string) => {
-        setIdCard(id);
         setshowModal(true);
+        setCurrentId(id);
     }    
     const handleCloseModal = () => setshowModal(false);
     
-    const currentCard = props.ingredients.filter(card => card._id === idCard);
+    const currentCard = ingredients.filter(card => card._id === currentId);
     const modal = showModal ? (
         <Modal header="Детали ингредиента" onClose={handleCloseModal}>
            <IngredientDetails cardData={currentCard} />
@@ -76,6 +78,7 @@ const BurgerIngredients = (props : IDataIngredients) => {
                 renderTrackVertical={({...props}) => <div {...props} className={s.scrollTrackVertical}/>} 
                 renderThumbVertical={({...props}) => <div {...props} className={s.scrollThumbVertical}/>}
                 ref={scrollBar} 
+                thumbSize={THUMB_HEIGHT}
                 className={s.contentInScroll}
                 onScroll={handleScroll}
             >
@@ -91,7 +94,7 @@ const BurgerIngredients = (props : IDataIngredients) => {
                                     <div onClick={() => handleOpenModal(card._id)} key={`_${card._id}`} className={`${s.card} pr-4 pl-4`}>
                                         <Counter count={1} size='default' />
                                         <img src={card.image} alt={card.name} />
-                                        <span className={`${s.price} mt-1 mb-1 text text_type_main-default`}>{card.price} <CurrencyIcon type="primary" /></span>
+                                        <span className={`${s.price} mt-1 mb-1 text text_type_digits-default`}>{card.price} <CurrencyIcon type="primary" /></span>
                                         <span className={`${s.name} text text_type_main-default`}>{card.name}</span>
                                     </div>
                                 )
