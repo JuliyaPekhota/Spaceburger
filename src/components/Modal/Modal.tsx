@@ -14,6 +14,7 @@ export interface IModal {
 
 const Modal = (props: IModal) => {
     const container = useMemo(() => document.createElement("div"), []);
+
     useEffect(() => {
       modalRoot.insertAdjacentElement('beforeend', container);
         return () => {
@@ -21,7 +22,7 @@ const Modal = (props: IModal) => {
         };
       }, [container]);
     
-    const escFunction = useCallback((e: KeyboardEvent) => {
+    const pressEsc = useCallback((e: KeyboardEvent) => {
         if(e.key === "Escape") {
           props.onClose();
         }
@@ -29,16 +30,16 @@ const Modal = (props: IModal) => {
     )
 
     useEffect(() => {
-      document.addEventListener("keydown", escFunction);
+      document.addEventListener("keydown", pressEsc);
     
         return () => {
-          document.removeEventListener("keydown", escFunction);
+          document.removeEventListener("keydown", pressEsc);
         };
-    }, [escFunction]);
+    }, [pressEsc]);
 
     return ReactDOM.createPortal(
       <>
-        <ModalOverlay onClose={props.onClose}>
+        <ModalOverlay onOverlayClick={props.onClose}>
           <div className={`${s.modal} pt-10 pl-10 pb-15 pr-10`}>
             <div className={`${s.close} pt-15 pr-10`} onClick={props.onClose}>
               <CloseIcon type="primary" />
