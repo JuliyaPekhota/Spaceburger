@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { Counter, Tab, CurrencyIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './BurgerIngredients.module.css';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -48,23 +48,24 @@ const BurgerIngredients = (props : IDataIngredients) => {
         }
      }
 
-    const handleOpenModal = (id : string) => {
+   /* const handleOpenModal = useCallback((id : string) => {
+            setshowModal(true);
+            setCurrentId(id);
+        }, []
+    );*/
+
+    const handleOpenModal = (id : string) => (event: any) => {
         setshowModal(true);
         setCurrentId(id);
-    }    
+    };
+
     const handleCloseModal = () => setshowModal(false);
     
     const currentCard = ingredients.filter(card => card._id === currentId);
-    const modal = showModal ? (
-        <Modal header="Детали ингредиента" onClose={handleCloseModal}>
-           <IngredientDetails cardData={currentCard} />
-        </Modal>
-    ) : null;
 
     const tabs = () => {
         return (  
           <>
-            {modal}
             <nav className={`${s.tabs} mb-10`}>
                 {sections.map((tab, i) => (
                     <Tab key={`tab${i}${tab}`} value={tab} active={current === tab} onClick={handleClickTab}>
@@ -91,7 +92,7 @@ const BurgerIngredients = (props : IDataIngredients) => {
                               .filter(card => card.type === tab)
                               .map(card => {
                                 return (
-                                    <div onClick={() => handleOpenModal(card._id)} key={`_${card._id}`} className={`${s.card} pr-4 pl-4`}>
+                                    <div onClick={handleOpenModal(card._id)} key={`_${card._id}`} className={`${s.card} pr-4 pl-4`}>
                                         <Counter count={1} size='default' />
                                         <img src={card.image} alt={card.name} />
                                         <span className={`${s.price} mt-1 mb-1 text text_type_digits-default`}>{card.price} <CurrencyIcon type="primary" /></span>
@@ -110,10 +111,18 @@ const BurgerIngredients = (props : IDataIngredients) => {
     }
    
     return ( 
-        <section className={`${s.root} mb-10`}>
-            <h1 className='text text_type_main-large mb-5'>Соберите бургер</h1>
-            {tabs()}
-        </section>
+        <>
+            {showModal ? (
+                <Modal header="Детали ингредиента" onClose={handleCloseModal}>
+                <IngredientDetails cardData={currentCard} />
+                </Modal>
+            ) : null
+            }
+            <section className={`${s.root} mb-10`}>
+                <h1 className='text text_type_main-large mb-5'>Соберите бургер</h1>
+                {tabs()}
+            </section>
+        </>
     )
 }
   

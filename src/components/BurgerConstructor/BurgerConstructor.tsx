@@ -19,7 +19,7 @@ const BurgerConstructor = (props: IDataIngredients) => {
     return (
       <ConstructorElement
         type={position === 'top' ? TypeElement.Top : TypeElement.Bottom}
-        isLocked={true}
+        isLocked
         text={`${props.ingredients[0].name} (${position === 'top' ? 'верх' : 'низ'})`}
         price={props.ingredients[0].price}
         thumbnail={props.ingredients[0].image}
@@ -28,58 +28,52 @@ const BurgerConstructor = (props: IDataIngredients) => {
     )
   }
 
-  const constructorElements = () => {
-    return (
-      <>
-      <div className={`${s.content} mb-10`}>
-        {bunTopBottom('top')}
-        <Scrollbars 
-          renderTrackVertical={({...props}) =>
-              <div {...props} className={s.scrollTrackVertical}/>
-            } 
-          renderThumbVertical={({...props}) =>
-              <div {...props} className={s.scrollThumbVertical}/>
-            }
-          className={`${s.contentInScroll}`}>
-            {fillings.map((card : any) => {
-              return (
-                <div key={card._id} className={`${s.fillings} mb-4 mr-4 ml-4`}>
-                {card.type !== 'bun' && (<DragIcon type="primary" />)}
-                <ConstructorElement
-                  isLocked={card.type === 'bun'}
-                  text={card.name}
-                  price={card.price}
-                  thumbnail={card.image}
-                />
-                </div>                  
-              )
-            })}
-        </Scrollbars>
-        {bunTopBottom('bottom')}
-      </div>  
-      <div className={`${s.totalPrice} mb-10`}>
-        <span className={`${s.price} text text_type_digits-medium`}>600 <CurrencyIcon type="primary" /></span>
-        <Button type="primary" size="medium" onClick={toggleModal}>
-          Оформить заказ
-        </Button>
-      </div>
-      </>
-    )
-  };
-
   const toggleModal = () => setshowModal(!showModal);
-
-  const modal = showModal ? (
-    <Modal onClose={toggleModal}>
-       <OrderDetails />
-    </Modal>
-  ) : null;
   
   return (
     <>
-      {modal}
+      {showModal ? (
+        <Modal onClose={toggleModal}>
+          <OrderDetails />
+        </Modal>
+      ) : null
+      }
+
       <section className={`${s.root} pt-25`}>
-        {constructorElements()}
+        <>
+          <div className={`${s.content} mb-10`}>
+            {bunTopBottom('top')}
+            <Scrollbars 
+              renderTrackVertical={({...props}) =>
+                  <div {...props} className={s.scrollTrackVertical}/>
+                } 
+              renderThumbVertical={({...props}) =>
+                  <div {...props} className={s.scrollThumbVertical}/>
+                }
+              className={`${s.contentInScroll}`}>
+                {fillings.map((filling : any, i) => {
+                  return (
+                    <div key={`${filling._id}${i}`} className={`${s.fillings} mb-4 mr-4 ml-4`}>
+                    {filling.type !== 'bun' && (<DragIcon type="primary" />)}
+                    <ConstructorElement
+                      isLocked={filling.type === 'bun'}
+                      text={filling.name}
+                      price={filling.price}
+                      thumbnail={filling.image}
+                    />
+                    </div>                  
+                  )
+                })}
+            </Scrollbars>
+            {bunTopBottom('bottom')}
+          </div>  
+          <div className={`${s.totalPrice} mb-10`}>
+            <span className={`${s.price} text text_type_digits-medium`}>600 <CurrencyIcon type="primary" /></span>
+            <Button type="primary" size="medium" onClick={toggleModal}>
+              Оформить заказ
+            </Button>
+          </div>
+      </>
       </section>
     </>
   )
