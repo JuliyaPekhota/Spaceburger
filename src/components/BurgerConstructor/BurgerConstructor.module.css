@@ -1,0 +1,52 @@
+.root {
+    width: 600px;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.bunTopBottom div {
+    max-width: 100%;
+    width: 536px;
+    margin: 0 16px 0 48px;
+}
+.contentInScroll {
+    height: 458px !important;
+}
+.fillings {
+    position: relative;
+}
+.fillings>svg {
+    position: absolute;
+    left: 0;
+    top: 37%;
+}
+.fillings div {
+    max-width: 100%;
+    margin-left: 32px;
+    width: 536px;
+}
+.scrollTrackVertical {
+    right: 2px;
+    bottom: 2px;
+    top: 2px;
+    background-color: #2F2F37;
+    border-radius: 0;
+    width: 8px !important;
+}
+.scrollThumbVertical {
+    background-color: #8585AD;
+    border-radius: 0;
+}
+.totalPrice {
+    display:flex;
+    justify-content: right;
+    gap: 40px;
+}
+.price {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #F2F2F3;
+}
