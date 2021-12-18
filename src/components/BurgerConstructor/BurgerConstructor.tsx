@@ -1,19 +1,40 @@
-import { useState } from 'react';
+import { useState, useContext, useReducer, useEffect } from 'react';
 import { ConstructorElement, DragIcon, Button, CurrencyIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './BurgerConstructor.module.css';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { IDataIngredients } from '../../utils/types';
+import { IData, TypeElement } from '../../utils/types';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import Modal from '../../components/Modal/Modal';
+import { IngredientsContext } from '../../services/ingredientsContext';
+import { postData } from '../../services/postData';
 
-enum TypeElement {
-  Top = "top",
-  Bottom = "bottom"
+const ORDERS_URL = 'https://norma.nomoreparties.space/api/orders';
+
+const setTotalCost = (totalCost: any, action: any) => {
+  switch (action.type) {
+    case "added":
+      return { sum: totalCost.sum };
+    case "deleted":
+      return { sum: 0 };
+    default:
+      throw new Error(`Wrong type of action: ${action.type}`);
+  }
 }
 
-const BurgerConstructor = (props: IDataIngredients) => {
-  const fillings = props.ingredients.filter((card : any) => card.type !== 'bun');
+const BurgerConstructor = () => {
+  const ingredients: Array<IData> = useContext(IngredientsContext);
+  const bun = ingredients[0];
+  const fillings = ingredients.filter((card : any) => card.type !== 'bun');
+  const sumTotalOrder = fillings.reduce((sum, current) => sum + current.price, 0) + (bun.price*2);
+  const [totalCost, dispatch] = useReducer(setTotalCost, {sum: sumTotalOrder});
   const [showModal, setshowModal] = useState(false);
+  const [numberOrder, setNumberOrder] = useState(0);
+  const [isNumberOrderLodaded, setIsNumberOrderLodaded] = useState(false);
+  const idsOrder = ingredients.map(card => card._id);
+
+  useEffect(() => {
+    dispatch({ type: "added" })
+  }, []);
 
   const bunTopBottom = (position: string) => {
     return (
@@ -21,22 +42,38 @@ const BurgerConstructor = (props: IDataIngredients) => {
         <ConstructorElement
           type={position === 'top' ? TypeElement.Top : TypeElement.Bottom}
           isLocked
-          text={`${props.ingredients[0].name} (${position === 'top' ? 'верх' : 'низ'})`}
-          price={props.ingredients[0].price}
-          thumbnail={props.ingredients[0].image}
-          key={`${position}${props.ingredients[0]._id}`}
+          text={`${bun.name} (${position === 'top' ? 'верх' : 'низ'})`}
+          price={bun.price}
+          thumbnail={bun.image}
+          key={`${position}${bun._id}`}
         />
       </div>
     )
   }
 
-  const toggleModal = () => setshowModal(!showModal);
+ const handleOpenModal = () => {
+  setshowModal(true);
+
+  postData(ORDERS_URL, { "ingredients": idsOrder})
+      .then(data => {
+        setNumberOrder(data.order.number);
+        setIsNumberOrderLodaded(data.success);
+      })
+      .catch(error => {
+          console.error('There has been a problem with fetch operation:', error);
+        }
+      );
+};
+
+const handleCloseModal = () => setshowModal(false);
   
   return (
     <>
       {showModal ? (
-        <Modal onClose={toggleModal}>
-          <OrderDetails />
+        <Modal onClose={handleCloseModal}>
+          {isNumberOrderLodaded &&
+           <OrderDetails order={numberOrder}/>
+          } 
         </Modal>
       ) : null
       }
@@ -70,8 +107,8 @@ const BurgerConstructor = (props: IDataIngredients) => {
             {bunTopBottom('bottom')}
           </div>  
           <div className={`${s.totalPrice} mb-10`}>
-            <span className={`${s.price} text text_type_digits-medium`}>600 <CurrencyIcon type="primary" /></span>
-            <Button type="primary" size="medium" onClick={toggleModal}>
+            <span className={`${s.price} text text_type_digits-medium`}>{totalCost.sum} <CurrencyIcon type="primary" /></span>
+            <Button type="primary" size="medium" onClick={handleOpenModal}>
               Оформить заказ
             </Button>
           </div>

@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState } from 'react';
 import { Counter, Tab, CurrencyIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './BurgerIngredients.module.css';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -47,12 +47,6 @@ const BurgerIngredients = (props : IDataIngredients) => {
             setCurrent('bun');
         }
      }
-
-   /* const handleOpenModal = useCallback((id : string) => {
-            setshowModal(true);
-            setCurrentId(id);
-        }, []
-    );*/
 
     const handleOpenModal = (id : string) => (event: any) => {
         setshowModal(true);
