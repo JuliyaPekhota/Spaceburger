@@ -10,12 +10,17 @@ import { postData } from '../../services/postData';
 
 const ORDERS_URL = 'https://norma.nomoreparties.space/api/orders';
 
-const setTotalCost = (totalCost: any, action: any) => {
+const initialState = {sum: 0};
+const totalCostReducer = (totalCost: any, action: any) => {
+  const bun = action.payload.filter((card: any) => card.type === 'bun')[0];
+  const fillings = action.payload.filter((card: any) => card.type !== 'bun');
+  const totalSum = fillings.reduce((sum: any, current: any) => sum + current.price, 0) + (bun.price*2);
+
   switch (action.type) {
     case "added":
-      return { sum: totalCost.sum };
+      return { sum: totalSum };
     case "deleted":
-      return { sum: 0 };
+      return initialState;
     default:
       throw new Error(`Wrong type of action: ${action.type}`);
   }
@@ -23,17 +28,18 @@ const setTotalCost = (totalCost: any, action: any) => {
 
 const BurgerConstructor = () => {
   const ingredients: Array<IData> = useContext(IngredientsContext);
-  const bun = ingredients[0];
+  const bun = ingredients.filter((card : any) => card.type === 'bun')[0];
   const fillings = ingredients.filter((card : any) => card.type !== 'bun');
-  const sumTotalOrder = fillings.reduce((sum, current) => sum + current.price, 0) + (bun.price*2);
-  const [totalCost, dispatch] = useReducer(setTotalCost, {sum: sumTotalOrder});
+
+  const [totalCost, dispatch] = useReducer(totalCostReducer, initialState);
   const [showModal, setshowModal] = useState(false);
   const [numberOrder, setNumberOrder] = useState(0);
   const [isNumberOrderLodaded, setIsNumberOrderLodaded] = useState(false);
-  const idsOrder = ingredients.map(card => card._id);
 
+  const ingredientIds = ingredients.map(card => card._id);
+ 
   useEffect(() => {
-    dispatch({ type: "added" })
+    dispatch({ type: 'added', payload: [...fillings, ...[bun]]})
   }, []);
 
   const bunTopBottom = (position: string) => {
@@ -54,7 +60,7 @@ const BurgerConstructor = () => {
  const handleOpenModal = () => {
   setshowModal(true);
 
-  postData(ORDERS_URL, { "ingredients": idsOrder})
+  postData(ORDERS_URL, { "ingredients": ingredientIds})
       .then(data => {
         setNumberOrder(data.order.number);
         setIsNumberOrderLodaded(data.success);
