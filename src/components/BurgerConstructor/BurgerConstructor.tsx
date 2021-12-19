@@ -5,7 +5,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { IData, TypeElement } from '../../utils/types';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import Modal from '../../components/Modal/Modal';
-import { IngredientsContext } from '../../services/ingredientsContext';
+import { IngredientsContext, OrderContext } from '../../services/ingredientsContext';
 import { postData } from '../../services/postData';
 
 const ORDERS_URL = 'https://norma.nomoreparties.space/api/orders';
@@ -72,7 +72,9 @@ const handleCloseModal = () => setshowModal(false);
       {showModal ? (
         <Modal onClose={handleCloseModal}>
           {isNumberOrderLodaded &&
-           <OrderDetails order={numberOrder}/>
+          <OrderContext.Provider value={numberOrder}> 
+            <OrderDetails />
+          </OrderContext.Provider>
           } 
         </Modal>
       ) : null
