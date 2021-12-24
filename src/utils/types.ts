@@ -13,3 +13,8 @@ export interface IData {
   carbohydrates: number;
   calories: number;
 }
+
+export enum TypeElement {
+  Top = 'top',
+  Bottom = 'bottom'
+}
