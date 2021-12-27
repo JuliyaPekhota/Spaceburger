@@ -30,20 +30,3 @@
     gap: calc(var(--offset-base-size) * 8) calc(var(--offset-base-size) * 4);
     grid-template-columns: repeat(2, 1fr);
 }
-.card {
-    display: flex;
-    min-height: 208px;
-    position: relative;
-    flex-direction: column;
-    align-items: center;
-    flex: auto;
-    cursor: pointer;
-}
-.price {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-.name {
-    text-align: center;
-}

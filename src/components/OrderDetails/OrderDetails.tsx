@@ -1,14 +1,12 @@
-import { useContext } from 'react';
+
 import s from './OrderDetails.module.css';
 import imageCheckPath from '../../images/check.svg';
-import { OrderContext } from '../../services/ingredientsContext';
 
-const OrderDetails = () => {
-    const numberOrder: number = useContext(OrderContext);
-
+const OrderDetails = (props : any) => {
+    const { number } = props;
     return (
         <section className={`mt-20 mb-20`}>
-            <span className={`${s.orderNumber} text text_type_digits-large`}>{numberOrder}</span>
+            <span className={`${s.orderNumber} text text_type_digits-large`}>{number}</span>
             <span className='mt-8 mb-15 text text_type_main-medium'>идентификатор заказа</span>
             <img src={imageCheckPath} alt="check"/>
             <span className='mt-15 mb-2 text text_type_main-default'>Ваш заказ начали готовить</span>
