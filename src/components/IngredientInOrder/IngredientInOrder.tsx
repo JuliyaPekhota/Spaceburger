@@ -1,32 +1,29 @@
-import { useRef } from 'react';
+import { useRef, memo } from 'react';
 import s from './IngredientInOrder.module.css';
 import { ConstructorElement, DragIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
-import { IDataOfCard, TypeElement, ItemTypes } from '../../utils/types';
+import { IDataOfIngredient, ItemTypes, TypeElement } from '../../utils/types';
 import { DELETE_INGREDIENT_IN_ORDER } from '../../services/actions';
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { XYCoord } from 'dnd-core';
+import cn from "classnames";
 
-const IngredientInOrder = (props: IDataOfCard) => {
-    const { cardData, position, index, moveInOrder } = props;
-    const { type, _id, name, price, image } = cardData[0];
+export const IngredientInOrder = memo(({ data, index, moveInOrder, position }: IDataOfIngredient) => {
+  const { type, name, price, image, id, _id } = data[0];
     const dispatch = useDispatch();
-
     const ref = useRef<HTMLDivElement>(null);
     
     const [{ handlerId }, drop] = useDrop({
     accept: ItemTypes.IngredientInOrder,
-    collect(monitor) {
-      return {
-        handlerId: monitor.getHandlerId(),
-      }
-    },
+    collect: monitor => ({
+      handlerId: monitor.getHandlerId(),
+    }),
     hover(item: any, monitor: DropTargetMonitor) {
       if (!ref.current) {
         return
       }
       const dragIndex = item.index;
-      const hoverIndex = index ?? 0;
+      const hoverIndex = index;
 
       // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
@@ -61,7 +58,7 @@ const IngredientInOrder = (props: IDataOfCard) => {
       }
 
       // Time to actually perform the action
-      moveInOrder && moveInOrder(dragIndex, hoverIndex);
+      moveInOrder?.(dragIndex, hoverIndex);
       // Note: we're mutating the monitor item here!
       // Generally it's better to avoid mutations,
       // but it's good here for the sake of performance
@@ -70,26 +67,28 @@ const IngredientInOrder = (props: IDataOfCard) => {
     },
   });
 
-    const [{ opacity }, drag] = useDrag({
+    const [{ isDragging }, drag] = useDrag({
       type: ItemTypes.IngredientInOrder,
       item: () => {
-        return { id: _id, index }
+        return { id, index }
       },
       collect: (monitor: any) => ({
-        opacity: monitor.isDragging() ? 0 : 1
+        isDragging: monitor.isDragging(),
       }),
     });
 
     drag(drop(ref));
     
     const onDelete = () => {
-        dispatch({
+      console.log(id);
+      dispatch({
           type: DELETE_INGREDIENT_IN_ORDER,
           _id
         });
-      };
+    };
 
-    return props.position ? 
+    const opacity = isDragging ? 0 : 1;
+    return type === 'bun' ? 
         (
           <div className={s.bunTopBottom}>
             <ConstructorElement
@@ -98,22 +97,21 @@ const IngredientInOrder = (props: IDataOfCard) => {
               text={`${name} (${position === 'top' ? 'верх' : 'низ'})`}
               price={price}
               thumbnail={image}
-              key={`${position}${_id}`}
             />
           </div>
         )
         :
         (
-        <div ref={ref} style={{ opacity }} data-handler-id={handlerId} className={`${s.fillings} mb-4 mr-4 ml-4`}>
-            {type !== 'bun' && (<DragIcon type="primary" />)}
-            <ConstructorElement
-            isLocked={type === 'bun'}
-            text={name}
-            price={price}
-            thumbnail={image}
-            handleClose={onDelete}
-            />
-        </div>
+          <div ref={ref} style={{ opacity }} className={cn(s.fillings, 'mb-4 mr-4 ml-4')} data-handler-id={handlerId}>
+              <DragIcon type="primary" />
+              <ConstructorElement
+              isLocked={type === 'bun'}
+              text={name}
+              price={price}
+              thumbnail={image}
+              handleClose={onDelete}
+              />
+          </div>
         )
-}           
-export default IngredientInOrder;            
+}
+)        

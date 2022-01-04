@@ -1,19 +1,27 @@
 import { rootReducer } from '../services/reducers';
 
 export interface IDataIngredients {
-  ingredients: IData[];
+  ingredients: IIngredient[];
 }
-  
-export interface IData {
+
+export interface IIngredient {
+  _id: string;
+  id: string;
   name: string;
   type: string;
   price: number;
   image: string;
-  _id: string;
   proteins: number;
   fat: number;
   carbohydrates: number;
   calories: number;
+}
+
+export interface IDataOfIngredient {
+  data: IIngredient[];
+  position?: string;
+  index: number;
+  moveInOrder?: (dragIndex: number, hoverIndex: number) => void;
 }
 
 export enum TypeElement {
@@ -24,13 +32,6 @@ export enum TypeElement {
 export enum ItemTypes  {
   IngredientInOrder = 'ingredientInOrder',
   Ingredient = 'ingredient'
-}
-
-export interface IDataOfCard {
-  cardData: IData[];
-  position?: string;
-  index?: number;
-  moveInOrder?: (dragIndex: number, hoverIndex: number) => void;
 }
 
 export type RootState = ReturnType<typeof rootReducer>

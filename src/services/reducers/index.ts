@@ -10,15 +10,16 @@ import {
     ADD_INGREDIENT_BUN_IN_ORDER,
     UPDATE_LOCATION_INGREDIENT_IN_ORDER
 } from '../actions';
-
+import update from 'immutability-helper';
+import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
     ingredientsRequest: false,
     ingredientsFailed: false,
     ingredientsSuccess: false,
-    ingredients: [] as any[],
 
-    ingredientsDelayed: [] as any[],
+    ingredients: [] as any[],
+    ingredientsInOrder: [] as any[],
 }
 
 export const ingredientsReducer = (state = initialState, action: any) => {
@@ -50,17 +51,17 @@ export const ingredientsReducer = (state = initialState, action: any) => {
       case ADD_INGREDIENT_IN_ORDER: {
         return {
           ...state,
-          ingredientsDelayed: [
-            ...state.ingredientsDelayed,
-            ...state.ingredients.filter(item => item._id === action._id),
-          ]
+          ingredientsInOrder: [
+            ...state.ingredientsInOrder,
+            ...state.ingredients.filter(item => item._id === action._id).map((item: any) => item ? {...item, id: uuidv4() } : item),
+          ],
         };
       }
       case ADD_INGREDIENT_BUN_IN_ORDER: {
         return {
           ...state,
-          ingredientsDelayed: [
-            ...state.ingredientsDelayed.filter(item => item.type !== 'bun'),
+          ingredientsInOrder: [
+            ...state.ingredientsInOrder.filter(item => item.type !== 'bun'),
             ...state.ingredients.filter(item => item._id === action._id),
           ]
         };
@@ -68,20 +69,20 @@ export const ingredientsReducer = (state = initialState, action: any) => {
       case DELETE_INGREDIENT_IN_ORDER: {
         return { 
           ...state, 
-          ingredientsDelayed: [...state.ingredientsDelayed].filter((value, index, array) => index !== array.findIndex((i) => i._id === action._id))
+          ingredientsInOrder: [...state.ingredientsInOrder].filter((value, index, array) => index !== array.findIndex((i) => i._id === action._id)),
         };
       }
-     /* case UPDATE_LOCATION_INGREDIENT_IN_ORDER: {
+      case UPDATE_LOCATION_INGREDIENT_IN_ORDER: {
         return { 
           ...state, 
-          ingredientsDelayed: update(state.ingredientsDelayed, {
+          ingredientsInOrder: update(state.ingredientsInOrder, {
             $splice: [
               [action.dragIndex, 1],
-              [action.hoverIndex, 0, state.ingredientsDelayed[action.dragIndex]],
+              [action.hoverIndex, 0, state.ingredientsInOrder[action.dragIndex]],
             ],
           }),
         };
-      }*/
+      }
           default: {
               return state
           }

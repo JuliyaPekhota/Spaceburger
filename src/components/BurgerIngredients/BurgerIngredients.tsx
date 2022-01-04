@@ -1,16 +1,15 @@
-import { useRef, useState } from 'react';
-import { Tab }  from '@ya.praktikum/react-developer-burger-ui-components';
-import s from './BurgerIngredients.module.css';
+import { FC, useRef, useState } from 'react';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { IDataIngredients } from '../../utils/types';
-import { v4 as uuidv4 } from 'uuid';
-
 import IngredientInList from '../IngredientInList/IngredientInList';
+
+import cn from "classnames";
+import s from './BurgerIngredients.module.css';
 
 const THUMB_HEIGHT = 230;
 
-const BurgerIngredients = (props : IDataIngredients) => {
-    const ingredients = props.ingredients;
+const BurgerIngredients: FC<IDataIngredients> = ({ ingredients }) => {
     const sections = ['bun', 'sauce', 'main'];
     const bunRef = useRef<HTMLDivElement>(null);
     const sauceRef = useRef<HTMLDivElement>(null);
@@ -50,7 +49,7 @@ const BurgerIngredients = (props : IDataIngredients) => {
     const tabs = () => {
         return (  
           <>
-            <nav className={`${s.tabs} mb-10`}>
+            <nav className={cn(s.tabs, 'mb-10')}>
                 {sections.map((tab, i) => (
                     <Tab key={`tab${i}${tab}`} value={tab} active={current === tab} onClick={handleClickTab}>
                         {tab === 'bun' ? 'Булки' : tab === 'sauce' ? 'Соусы' : 'Начинки'}
@@ -66,6 +65,8 @@ const BurgerIngredients = (props : IDataIngredients) => {
                 thumbSize={THUMB_HEIGHT}
                 className={s.contentInScroll}
                 onScroll={handleScroll}
+                autoHeight={true}
+                autoHeightMax={716}
             >
                {sections.map((tab, i) => (
                     <div key={`${i}${tab}`} ref={tab === 'bun' ? bunRef : tab === 'sauce' ? sauceRef : mainRef}>
@@ -73,12 +74,10 @@ const BurgerIngredients = (props : IDataIngredients) => {
                         <section className={`${s.ingredients} mt-6 mb-10 mr-4 ml-4`}>
                             {
                               ingredients
-                              .filter(card => card.type === tab)
-                              .map(card => {
-                                return (
-                                    <IngredientInList key={uuidv4()} cardData={[card]}/>
-                                )
-                              })
+                              .filter(ingredient => ingredient.type === tab)
+                              .map(ingredient => 
+                                    <IngredientInList key={ingredient._id} ingredients={[ingredient]}/>
+                              )
                             }
                         </section>
                     </div>

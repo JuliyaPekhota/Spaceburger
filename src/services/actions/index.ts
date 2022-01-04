@@ -6,6 +6,7 @@ export const DELETE_INGREDIENT_IN_ORDER = 'DELETE_INGREDIENT_IN_ORDER';
 export const ADD_INGREDIENT_BUN_IN_ORDER = 'ADD_INGREDIENT_BUN_IN_ORDER';
 export const UPDATE_LOCATION_INGREDIENT_IN_ORDER = 'UPDATE_LOCATION_INGREDIENT_IN_ORDER';
 
+
 const INGREDIENTS_URL = 'https://norma.nomoreparties.space/api/ingredients';
 
 export function getIngredients() {
@@ -38,4 +39,4 @@ export function getIngredients() {
         console.error('There has been a problem with fetch operation:', error);
       });
     }
-}
+} 

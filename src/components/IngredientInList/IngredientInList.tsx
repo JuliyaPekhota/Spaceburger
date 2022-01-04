@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import s from './IngredientInList.module.css';
-import { IDataOfCard, RootState, ItemTypes } from '../../utils/types';
+import { IDataIngredients, RootState, ItemTypes } from '../../utils/types';
 import { useDrag } from 'react-dnd';
 import { Counter, CurrencyIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
@@ -9,12 +9,12 @@ import { OPEN_MODAL_DETAILS, CLOSE_MODAL_DETAILS } from '../../services/actions/
 
 import { useSelector, useDispatch } from 'react-redux';
 
-const IngredientInList = (props: IDataOfCard) => {
-    const { _id, name, image, price } = props.cardData[0];
+const IngredientInList = ({ ingredients }: IDataIngredients) => {
+    const { _id, name, image, price } = ingredients[0];
     const [showModal, setshowModal] = useState(false);
-    const { ingredientsDelayed } = useSelector((store: RootState) => store.ingredient);
+    const { ingredientsInOrder } = useSelector((store: RootState) => store.ingredient);
     const dispatch = useDispatch();
-    const countIngredientInOrder = ingredientsDelayed.filter(item => item._id === _id).length;
+    const countIngredientInOrder = ingredientsInOrder.filter(item => item._id === _id).length;
 
     const handleOpenModal = () => { 
         setshowModal(true);
@@ -37,13 +37,13 @@ const IngredientInList = (props: IDataOfCard) => {
         collect: monitor => ({
             opacity: monitor.isDragging() ? 0.5 : 1
         })
-      });
+    });
 
       return (
         <>
             {showModal ? (
                     <Modal header="Детали ингредиента" onClose={handleCloseModal}>
-                        <IngredientDetails cardData={props.cardData} />
+                        <IngredientDetails ingredients={ingredients} />
                     </Modal>
                 ) : null
             }

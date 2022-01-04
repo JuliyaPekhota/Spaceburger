@@ -1,12 +1,13 @@
+import { FC } from 'react';
 import s from './IngredientDetails.module.css';
-import { IDataOfCard } from '../../utils/types';
+import { IDataIngredients } from '../../utils/types';
 
-const IngredientDetails = (props: IDataOfCard) => {
-    const { image, name, calories, proteins, fat, carbohydrates } = props.cardData[0];
+const IngredientDetails: FC<IDataIngredients> = ({ ingredients }) => {
+    const { image, name, calories, proteins, fat, carbohydrates } = ingredients[0];
     return (
         <section>
-               <img className={`${s.imageCard} pr-5 pl-5`} src={image} alt={name}/>
-               <p className='text text_type_main-medium mt-4 mt-8'>{name}</p>
+            <img className={`${s.imageCard} pr-5 pl-5`} src={image} alt={name}/>
+            <p className='text text_type_main-medium mt-4 mt-8'>{name}</p>
                <div className={`${s.description} mt-8`}>
                     <div>
                         <span className='text text_type_main-default text_color_inactive pb-2'>Калории,ккал</span>

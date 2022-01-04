@@ -1,5 +1,6 @@
 .fillings {
     position: relative;
+    cursor: move;
 }
 .fillings>svg {
     position: absolute;
