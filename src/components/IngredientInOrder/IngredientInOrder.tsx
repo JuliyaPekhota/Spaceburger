@@ -1,15 +1,17 @@
-import { useRef, memo } from 'react';
+import { FC, useRef } from 'react';
 import s from './IngredientInOrder.module.css';
 import { ConstructorElement, DragIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
-import { IDataOfIngredient, ItemTypes, TypeElement } from '../../utils/types';
+import { IDataOfIngredient, ItemTypes, TypeElement, RootState } from '../../utils/types';
 import { DELETE_INGREDIENT_IN_ORDER } from '../../services/actions';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { XYCoord } from 'dnd-core';
 import cn from "classnames";
 
-export const IngredientInOrder = memo(({ data, index, moveInOrder, position }: IDataOfIngredient) => {
-  const { type, name, price, image, id, _id } = data[0];
+const IngredientInOrder: FC<IDataOfIngredient> = ({ index, moveInOrder, position, _id }) => {
+  const { ingredientsInOrder } = useSelector((store: RootState) => store.ingredient);
+  const { type, name, price, image, id } = ingredientsInOrder.filter((card: any) => card._id === _id)[0];
+
     const dispatch = useDispatch();
     const ref = useRef<HTMLDivElement>(null);
     
@@ -23,7 +25,7 @@ export const IngredientInOrder = memo(({ data, index, moveInOrder, position }: I
         return
       }
       const dragIndex = item.index;
-      const hoverIndex = index;
+      const hoverIndex = index ?? 0;
 
       // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
@@ -80,7 +82,6 @@ export const IngredientInOrder = memo(({ data, index, moveInOrder, position }: I
     drag(drop(ref));
     
     const onDelete = () => {
-      console.log(id);
       dispatch({
           type: DELETE_INGREDIENT_IN_ORDER,
           _id
@@ -114,4 +115,4 @@ export const IngredientInOrder = memo(({ data, index, moveInOrder, position }: I
           </div>
         )
 }
-)        
+export default IngredientInOrder; 

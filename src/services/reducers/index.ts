@@ -5,13 +5,13 @@ import {
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS,
     GET_INGREDIENTS_FAILED,
+    DELETE_INGREDIENTS,
     ADD_INGREDIENT_IN_ORDER,
     DELETE_INGREDIENT_IN_ORDER,
     ADD_INGREDIENT_BUN_IN_ORDER,
     UPDATE_LOCATION_INGREDIENT_IN_ORDER
 } from '../actions';
 import update from 'immutability-helper';
-import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
     ingredientsRequest: false,
@@ -53,7 +53,7 @@ export const ingredientsReducer = (state = initialState, action: any) => {
           ...state,
           ingredientsInOrder: [
             ...state.ingredientsInOrder,
-            ...state.ingredients.filter(item => item._id === action._id).map((item: any) => item ? {...item, id: uuidv4() } : item),
+            ...state.ingredients.filter(item => item._id === action._id).map((item: any) => item ? {...item, id: action.id } : item),
           ],
         };
       }
@@ -70,6 +70,12 @@ export const ingredientsReducer = (state = initialState, action: any) => {
         return { 
           ...state, 
           ingredientsInOrder: [...state.ingredientsInOrder].filter((value, index, array) => index !== array.findIndex((i) => i._id === action._id)),
+        };
+      }
+      case DELETE_INGREDIENTS: {
+        return { 
+          ...state, 
+          ingredientsInOrder: [],
         };
       }
       case UPDATE_LOCATION_INGREDIENT_IN_ORDER: {

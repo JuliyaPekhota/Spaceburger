@@ -1,3 +1,5 @@
+import { BASE_URL } from '../../utils/constants';
+import { DELETE_INGREDIENTS } from '../actions/';
 export const ADD_INGREDIENT = 'ADD_INGREDIENT';
 export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
 
@@ -5,15 +7,13 @@ export const POST_ORDER_NUMBER_REQUEST = 'POST_ORDER_NUMBER_REQUEST';
 export const GET_ORDER_NUMBER_SUCCESS = 'GET_ORDER_NUMBER_SUCCESS';
 export const GET_ORDER_NUMBER_FAILED = 'GET_ORDER_NUMBER_FAILED';
 
-const ORDERS_URL = 'https://norma.nomoreparties.space/api/orders';
-
 export function getOrderNumber(ids: Array<string>) {
     return function(dispatch: any) { 
       dispatch({
             type: POST_ORDER_NUMBER_REQUEST
       });
   
-      fetch(ORDERS_URL, {
+      fetch(`${BASE_URL}orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -35,6 +35,9 @@ export function getOrderNumber(ids: Array<string>) {
             value: response.order.number,
             success: response.success
         });
+        dispatch({
+          type: DELETE_INGREDIENTS,
+        });  
       })
       .catch(error => {
         dispatch({

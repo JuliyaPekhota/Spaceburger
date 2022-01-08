@@ -4,7 +4,7 @@ import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import { CloseIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './Modal.module.css';
 
-const modalRoot = document.getElementById("modal") || document.body;
+const modalRoot = document.getElementById("modals") || document.body;
 
 export interface IModal {
   header?: string;

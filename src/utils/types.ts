@@ -18,10 +18,10 @@ export interface IIngredient {
 }
 
 export interface IDataOfIngredient {
-  data: IIngredient[];
   position?: string;
-  index: number;
+  index?: number;
   moveInOrder?: (dragIndex: number, hoverIndex: number) => void;
+  _id: string;
 }
 
 export enum TypeElement {

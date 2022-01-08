@@ -43,20 +43,3 @@ export const orderReducer = (state = initialState, action: any) => {
             }
       }
 };
-/*
-export const sumOrderReducer = (state = initialState, action: any) => {
-    switch (action.type) {
-        case ADD_INGREDIENT: {
-            return { 
-                ...state,
-                sum: action.payload.reduce((sum: any, current: any) => sum + current.price, 0)
-            };
-        }
-        case DELETE_INGREDIENT: {
-            return initialState;
-        }
-        default: {
-            return state
-        }
-  }
-};*/

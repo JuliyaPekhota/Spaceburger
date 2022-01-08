@@ -10,18 +10,18 @@ import { ADD_INGREDIENT_IN_ORDER,
 import { useSelector, useDispatch } from 'react-redux';
 import { getOrderNumber } from '../../services/actions/OrderDetails';
 import { useDrop } from 'react-dnd';
-import { IngredientInOrder} from '../IngredientInOrder/IngredientInOrder';
+import IngredientInOrder from '../IngredientInOrder/IngredientInOrder';
 import { v4 as uuidv4 } from 'uuid';
 import { Loader } from '../Loader/Loader';
 
 import s from './BurgerConstructor.module.css';
 
-export const BurgerConstructor: FC = () => {
+const BurgerConstructor: FC = () => {
   const { 
     ingredients, 
     ingredientsInOrder
   } = useSelector((store: RootState) => store.ingredient);
-  const { orderSuccess, orderRequest, number } = useSelector((store: RootState) => store.order);
+  const { orderSuccess, orderRequest } = useSelector((store: RootState) => store.order);
 
   const [showModal, setshowModal] = useState(false);
   const sum = ingredientsInOrder.reduce((sum: any, current: any) => current.type === 'bun' ? sum + current.price * 2 : sum + current.price, 0);
@@ -31,8 +31,10 @@ export const BurgerConstructor: FC = () => {
   
   const moveIngredient = useCallback((item: any) => {
     const ingredient = ingredients.filter((card: any) => card._id === item._id)[0];
+    const idIngredient = uuidv4();
     dispatch({
       type: ingredient.type === 'bun' ? ADD_INGREDIENT_BUN_IN_ORDER : ADD_INGREDIENT_IN_ORDER,
+      id: idIngredient,
       ...item
     });
   },
@@ -65,9 +67,9 @@ const handleCloseModal = () => setshowModal(false);
 
 const bunTopBottom = (position: string) => {
   return ingredientsInOrder
-  .filter((ingredient : IIngredient) => ingredient.type === 'bun')
+  .filter((ingredient: IIngredient) => ingredient.type === 'bun')
   .map((ingredient: IIngredient, i) => 
-     <IngredientInOrder position={position} key={uuidv4()} index={i} data={[ingredient]}/>
+     <IngredientInOrder position={position} key={uuidv4()} index={i} _id={ingredient._id}/>
   )
 }
 
@@ -76,7 +78,7 @@ const bunTopBottom = (position: string) => {
       {showModal ? (
         <Modal onClose={handleCloseModal}>
           {orderRequest && <Loader />}
-          {orderSuccess && <OrderDetails number={number} />} 
+          {orderSuccess && <OrderDetails />} 
         </Modal>
       ) : null
       }
@@ -96,7 +98,7 @@ const bunTopBottom = (position: string) => {
               className={`${s.contentInScroll}`}>
                 {ingredientsInOrder
                 .map((ingredient: IIngredient, i:number) => ingredient.type !== 'bun' &&
-                  <IngredientInOrder key={ingredient.id} moveInOrder={moveInOrder} index={i} data={[ingredient]}/>
+                  <IngredientInOrder key={ingredient.id} moveInOrder={moveInOrder} index={i} _id={ingredient._id} />
                 )}
               </Scrollbars>
               {bunTopBottom('bottom')}
@@ -118,3 +120,5 @@ const bunTopBottom = (position: string) => {
     </>
   )
 }
+  
+export default BurgerConstructor;

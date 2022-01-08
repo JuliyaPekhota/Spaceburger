@@ -1,15 +1,18 @@
 import { FC, useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { IDataIngredients } from '../../utils/types';
 import IngredientInList from '../IngredientInList/IngredientInList';
+import { useSelector } from 'react-redux';
+import { RootState, IIngredient } from '../../utils/types';
 
 import cn from "classnames";
 import s from './BurgerIngredients.module.css';
 
 const THUMB_HEIGHT = 230;
 
-const BurgerIngredients: FC<IDataIngredients> = ({ ingredients }) => {
+const BurgerIngredients: FC = () => {
+    const { ingredients } = useSelector((store: RootState) => store.ingredient);
+
     const sections = ['bun', 'sauce', 'main'];
     const bunRef = useRef<HTMLDivElement>(null);
     const sauceRef = useRef<HTMLDivElement>(null);
@@ -18,7 +21,7 @@ const BurgerIngredients: FC<IDataIngredients> = ({ ingredients }) => {
 
     const [current, setCurrent] = useState('bun');
 
-    const handleClickTab = (value : string) => {
+    const handleClickTab = (value: string) => {
         setCurrent(value);
         if (value === 'bun'){
             scrollBar.current?.scrollToTop();
@@ -74,9 +77,9 @@ const BurgerIngredients: FC<IDataIngredients> = ({ ingredients }) => {
                         <section className={`${s.ingredients} mt-6 mb-10 mr-4 ml-4`}>
                             {
                               ingredients
-                              .filter(ingredient => ingredient.type === tab)
-                              .map(ingredient => 
-                                    <IngredientInList key={ingredient._id} ingredients={[ingredient]}/>
+                              .filter((ingredient: IIngredient) => ingredient.type === tab)
+                              .map((ingredient: IIngredient) => 
+                                    <IngredientInList key={ingredient._id} _id={ingredient._id} />
                               )
                             }
                         </section>

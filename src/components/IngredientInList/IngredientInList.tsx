@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import s from './IngredientInList.module.css';
-import { IDataIngredients, RootState, ItemTypes } from '../../utils/types';
+import { RootState, ItemTypes, IDataOfIngredient } from '../../utils/types';
 import { useDrag } from 'react-dnd';
 import { Counter, CurrencyIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
@@ -9,10 +9,10 @@ import { OPEN_MODAL_DETAILS, CLOSE_MODAL_DETAILS } from '../../services/actions/
 
 import { useSelector, useDispatch } from 'react-redux';
 
-const IngredientInList = ({ ingredients }: IDataIngredients) => {
-    const { _id, name, image, price } = ingredients[0];
+const IngredientInList: FC<IDataOfIngredient> = ({ _id }) => {
     const [showModal, setshowModal] = useState(false);
-    const { ingredientsInOrder } = useSelector((store: RootState) => store.ingredient);
+    const { ingredients, ingredientsInOrder } = useSelector((store: RootState) => store.ingredient);
+    const { name, image, price } = ingredients.filter((card: any) => card._id === _id)[0];
     const dispatch = useDispatch();
     const countIngredientInOrder = ingredientsInOrder.filter(item => item._id === _id).length;
 
@@ -43,7 +43,7 @@ const IngredientInList = ({ ingredients }: IDataIngredients) => {
         <>
             {showModal ? (
                     <Modal header="Детали ингредиента" onClose={handleCloseModal}>
-                        <IngredientDetails ingredients={ingredients} />
+                        <IngredientDetails _id={_id}/>
                     </Modal>
                 ) : null
             }

@@ -1,9 +1,11 @@
 import { FC } from 'react';
 import s from './IngredientDetails.module.css';
-import { IDataIngredients } from '../../utils/types';
+import { useSelector } from 'react-redux';
+import { RootState, IDataOfIngredient } from '../../utils/types';
 
-const IngredientDetails: FC<IDataIngredients> = ({ ingredients }) => {
-    const { image, name, calories, proteins, fat, carbohydrates } = ingredients[0];
+const IngredientDetails: FC<IDataOfIngredient> = ({ _id }) => {
+    const { ingredients } = useSelector((store: RootState) => store.ingredient);
+    const { image, name, calories, proteins, fat, carbohydrates } = ingredients.filter((card: any) => card._id === _id)[0];
     return (
         <section>
             <img className={`${s.imageCard} pr-5 pl-5`} src={image} alt={name}/>

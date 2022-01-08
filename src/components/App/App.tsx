@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import AppHeader from '../AppHeader/AppHeader';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import { BurgerConstructor} from '../BurgerConstructor/BurgerConstructor';
+import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import { RootState } from '../../utils/types';
 import { Loader } from '../Loader/Loader';
 
@@ -37,7 +37,7 @@ function App() {
         
         {!ingredientsFailed && !ingredientsRequest && ingredientsSuccess && ingredients.length > 0 &&
         <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients ingredients={ingredients} />
+          <BurgerIngredients />
           <BurgerConstructor />
         </DndProvider>
         }

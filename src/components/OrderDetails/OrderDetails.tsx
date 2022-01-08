@@ -1,9 +1,12 @@
 
+import { FC } from 'react';
 import s from './OrderDetails.module.css';
+import { RootState } from '../../utils/types';
+import { useSelector } from 'react-redux';
 import imageCheckPath from '../../images/check.svg';
 
-const OrderDetails = (props : any) => {
-    const { number } = props;
+const OrderDetails: FC = () => {
+    const { number } = useSelector((store: RootState) => store.order);
     return (
         <section className={`mt-20 mb-20`}>
             <span className={`${s.orderNumber} text text_type_digits-large`}>{number}</span>
