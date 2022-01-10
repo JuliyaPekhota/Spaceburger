@@ -1,15 +1,18 @@
-import { useRef, useState } from 'react';
-import { Counter, Tab, CurrencyIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
-import s from './BurgerIngredients.module.css';
+import { FC, useRef, useState } from 'react';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { IDataIngredients } from '../../utils/types';
-import IngredientDetails from '../IngredientDetails/IngredientDetails';
-import Modal from '../../components/Modal/Modal';
+import IngredientInList from '../IngredientInList/IngredientInList';
+import { useSelector } from 'react-redux';
+import { RootState, IIngredient } from '../../utils/types';
+
+import cn from "classnames";
+import s from './BurgerIngredients.module.css';
 
 const THUMB_HEIGHT = 230;
 
-const BurgerIngredients = (props : IDataIngredients) => {
-    const ingredients = props.ingredients;
+const BurgerIngredients: FC = () => {
+    const { ingredients } = useSelector((store: RootState) => store.ingredient);
+
     const sections = ['bun', 'sauce', 'main'];
     const bunRef = useRef<HTMLDivElement>(null);
     const sauceRef = useRef<HTMLDivElement>(null);
@@ -17,10 +20,8 @@ const BurgerIngredients = (props : IDataIngredients) => {
     const scrollBar = useRef<Scrollbars>(null);
 
     const [current, setCurrent] = useState('bun');
-    const [currentId, setCurrentId] = useState('');
-    const [showModal, setshowModal] = useState(false);
 
-    const handleClickTab = (value : string) => {
+    const handleClickTab = (value: string) => {
         setCurrent(value);
         if (value === 'bun'){
             scrollBar.current?.scrollToTop();
@@ -48,19 +49,10 @@ const BurgerIngredients = (props : IDataIngredients) => {
         }
      }
 
-    const handleOpenModal = (id : string) => (event: any) => {
-        setshowModal(true);
-        setCurrentId(id);
-    };
-
-    const handleCloseModal = () => setshowModal(false);
-    
-    const currentCard = ingredients.filter(card => card._id === currentId);
-
     const tabs = () => {
         return (  
           <>
-            <nav className={`${s.tabs} mb-10`}>
+            <nav className={cn(s.tabs, 'mb-10')}>
                 {sections.map((tab, i) => (
                     <Tab key={`tab${i}${tab}`} value={tab} active={current === tab} onClick={handleClickTab}>
                         {tab === 'bun' ? 'Булки' : tab === 'sauce' ? 'Соусы' : 'Начинки'}
@@ -76,6 +68,8 @@ const BurgerIngredients = (props : IDataIngredients) => {
                 thumbSize={THUMB_HEIGHT}
                 className={s.contentInScroll}
                 onScroll={handleScroll}
+                autoHeight={true}
+                autoHeightMax={716}
             >
                {sections.map((tab, i) => (
                     <div key={`${i}${tab}`} ref={tab === 'bun' ? bunRef : tab === 'sauce' ? sauceRef : mainRef}>
@@ -83,17 +77,10 @@ const BurgerIngredients = (props : IDataIngredients) => {
                         <section className={`${s.ingredients} mt-6 mb-10 mr-4 ml-4`}>
                             {
                               ingredients
-                              .filter(card => card.type === tab)
-                              .map(card => {
-                                return (
-                                    <div onClick={handleOpenModal(card._id)} key={`_${card._id}`} className={`${s.card} pr-4 pl-4`}>
-                                        <Counter count={1} size='default' />
-                                        <img src={card.image} alt={card.name} />
-                                        <span className={`${s.price} mt-1 mb-1 text text_type_digits-default`}>{card.price} <CurrencyIcon type="primary" /></span>
-                                        <span className={`${s.name} text text_type_main-default`}>{card.name}</span>
-                                    </div>
-                                )
-                              })
+                              .filter((ingredient: IIngredient) => ingredient.type === tab)
+                              .map((ingredient: IIngredient) => 
+                                    <IngredientInList key={ingredient._id} _id={ingredient._id} />
+                              )
                             }
                         </section>
                     </div>
@@ -105,18 +92,10 @@ const BurgerIngredients = (props : IDataIngredients) => {
     }
    
     return ( 
-        <>
-            {showModal ? (
-                <Modal header="Детали ингредиента" onClose={handleCloseModal}>
-                <IngredientDetails cardData={currentCard} />
-                </Modal>
-            ) : null
-            }
             <section className={`${s.root} mb-10`}>
                 <h1 className='text text_type_main-large mb-5'>Соберите бургер</h1>
                 {tabs()}
             </section>
-        </>
     )
 }
   

@@ -1,48 +1,46 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import AppHeader from '../AppHeader/AppHeader';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
+import { RootState } from '../../utils/types';
+import { Loader } from '../Loader/Loader';
+
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
+
 import "../../styles/globals.css";
 import "../../styles/fonts.css";
-import { IngredientsContext } from '../../services/ingredientsContext';
 
-const INGREDIENTS_URL = 'https://norma.nomoreparties.space/api/ingredients';
+import { useSelector, useDispatch } from 'react-redux';
+import { getIngredients } from '../../services/actions';
+
 
 function App() {
-  const [ingredients, setIngredients] = useState([]);
-  const [isIngredientsLodaded, setIsIngredientsLodaded] = useState(false);
-  
+  const { ingredients, 
+          ingredientsSuccess, 
+          ingredientsRequest, 
+          ingredientsFailed } = useSelector((store: RootState) => store.ingredient);
+
+  const dispatch = useDispatch();
+ 
   useEffect(() => {
-      fetch(INGREDIENTS_URL)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not OK');
-        }
-        return response.json();
-      })  
-      .then(response => {
-        setIsIngredientsLodaded(response.success);
-        setIngredients(response.data);
-      })
-      .catch(error => {
-          console.error('There has been a problem with fetch operation:', error);
-        }
-      );
-  }, []);
+    dispatch(getIngredients())
+  }, [dispatch]);
 
   return (
     <>
       <AppHeader />
       <main>
-       {isIngredientsLodaded && ingredients.length > 0 &&
-        <>
-          <BurgerIngredients ingredients={ingredients} />
-          <IngredientsContext.Provider value={ingredients}>
-            <BurgerConstructor/>
-          </IngredientsContext.Provider>
-        </>
-       }    
+        {ingredientsFailed && <p>Произошла ошибка при получении данных</p>}
+        {ingredientsRequest && <Loader />}
+        
+        {!ingredientsFailed && !ingredientsRequest && ingredientsSuccess && ingredients.length > 0 &&
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </DndProvider>
+        }
       </main>
     </>
   );
