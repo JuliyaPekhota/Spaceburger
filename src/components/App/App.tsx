@@ -1,48 +1,37 @@
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { HomePage, LoginPage, Register, ForgotPassword, ResetPassword, Profile/*, NotFound404*/ } from '../../pages';
+import { ProtectedRoute } from '../ProtectedRoute';
+import { NoAuthRoute } from '../NoAuthRoute';
 
-import { useEffect } from 'react';
-import AppHeader from '../AppHeader/AppHeader';
-import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
-import { RootState } from '../../utils/types';
-import { Loader } from '../Loader/Loader';
-
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
-
-import "../../styles/globals.css";
-import "../../styles/fonts.css";
-
-import { useSelector, useDispatch } from 'react-redux';
-import { getIngredients } from '../../services/actions';
-
-
-function App() {
-  const { ingredients, 
-          ingredientsSuccess, 
-          ingredientsRequest, 
-          ingredientsFailed } = useSelector((store: RootState) => store.ingredient);
-
-  const dispatch = useDispatch();
- 
-  useEffect(() => {
-    dispatch(getIngredients())
-  }, [dispatch]);
-
+const App = () => {
   return (
-    <>
-      <AppHeader />
-      <main>
-        {ingredientsFailed && <p>Произошла ошибка при получении данных</p>}
-        {ingredientsRequest && <Loader />}
+    <Router>
+      <Switch>
+        <Route path="/" exact={true}>
+          <HomePage />
+        </Route>
         
-        {!ingredientsFailed && !ingredientsRequest && ingredientsSuccess && ingredients.length > 0 &&
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </DndProvider>
-        }
-      </main>
-    </>
+        <NoAuthRoute path="/login" exact={true} type="guest">
+          <LoginPage />
+        </NoAuthRoute>
+
+        <NoAuthRoute path="/register" exact={true} type="guest">
+          <Register />
+        </NoAuthRoute>
+
+        <NoAuthRoute path="/forgot-password" exact={true} type="guest">
+          <ForgotPassword />
+        </NoAuthRoute>
+        
+        <NoAuthRoute path="/reset-password" exact={true} type="guest">
+          <ResetPassword />
+        </NoAuthRoute>
+
+        <ProtectedRoute path="/profile" exact={true}>
+          <Profile />
+        </ProtectedRoute>
+      </Switch>
+    </Router>
   );
 }
 

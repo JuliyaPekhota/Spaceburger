@@ -1,6 +1,7 @@
-import { FC, useState, useCallback } from 'react';
+import { FC, useState, useCallback, useMemo } from 'react';
 import { Button, CurrencyIcon, BurgerIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useHistory } from 'react-router-dom';
 import { RootState, ItemTypes, IIngredient } from '../../utils/types';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import Modal from '../../components/Modal/Modal';
@@ -22,9 +23,15 @@ const BurgerConstructor: FC = () => {
     ingredientsInOrder
   } = useSelector((store: RootState) => store.ingredient);
   const { orderSuccess, orderRequest } = useSelector((store: RootState) => store.order);
+  const isLoggedIn = useSelector((store: RootState) => store.user.authorized);
+  const { accessToken } = useSelector((store: RootState) => store.user);
+  const history = useHistory();
 
   const [showModal, setshowModal] = useState(false);
-  const sum = ingredientsInOrder.reduce((sum: any, current: any) => current.type === 'bun' ? sum + current.price * 2 : sum + current.price, 0);
+  const sum = useMemo(
+    () => ingredientsInOrder.reduce((sum: any, current: any) => current.type === 'bun' ? sum + current.price * 2 : sum + current.price, 0),
+    [ingredientsInOrder]
+  );
   const dispatch = useDispatch();
 
   const ingredientIds = ingredientsInOrder.map(card => card?._id);
@@ -59,8 +66,13 @@ const BurgerConstructor: FC = () => {
   );
 
  const handleOpenModal = () => {
-  setshowModal(true);
-  dispatch(getOrderNumber(ingredientIds));
+  
+  if (isLoggedIn) {
+    setshowModal(true);
+    dispatch(getOrderNumber(ingredientIds, accessToken));
+  } else {
+    history.push("/login");
+  }
 };
 
 const handleCloseModal = () => setshowModal(false);

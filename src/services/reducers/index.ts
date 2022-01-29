@@ -1,6 +1,10 @@
 import { combineReducers } from 'redux';
 import { idIngredientReducer } from './IngredientDetails';
 import { orderReducer } from './OrderDetails';
+import { passwordResetReducer } from './PasswordReset';
+import { registerReducer } from './Register';
+import { userInfoReducer } from './UserInfo'
+import { userReducer } from './UserAuth';
 import {
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS,
@@ -99,4 +103,8 @@ export const rootReducer = combineReducers({
     ingredient: ingredientsReducer,
     idOpenIngredient: idIngredientReducer,
     order: orderReducer,
+    passwordReset: passwordResetReducer,
+    register: registerReducer,
+    userInfo: userInfoReducer,
+    user: userReducer,
 });

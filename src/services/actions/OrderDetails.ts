@@ -7,7 +7,7 @@ export const POST_ORDER_NUMBER_REQUEST = 'POST_ORDER_NUMBER_REQUEST';
 export const GET_ORDER_NUMBER_SUCCESS = 'GET_ORDER_NUMBER_SUCCESS';
 export const GET_ORDER_NUMBER_FAILED = 'GET_ORDER_NUMBER_FAILED';
 
-export function getOrderNumber(ids: Array<string>) {
+export function getOrderNumber(ids: Array<string>, token: string) {
     return function(dispatch: any) { 
       dispatch({
             type: POST_ORDER_NUMBER_REQUEST
@@ -16,7 +16,8 @@ export function getOrderNumber(ids: Array<string>) {
       fetch(`${BASE_URL}orders`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': token,
         },
         body: JSON.stringify({"ingredients": ids})
       })
