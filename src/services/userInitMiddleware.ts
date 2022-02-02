@@ -1,36 +1,83 @@
 import {
-  AUTH_USER,
-  NO_AUTH_USER,
-  CHECK_AUTH_USER,
+  LOGIN,
+  LOGOUT,
+  GET_USER,
+  PATCH_USER
 } from './actions/UserAuth';
 import jwtDecode from "jwt-decode";
 import { JWTDeCode } from '../utils/types';
-import { updateToken } from './actions/UserAuth';
+import { login, logout, getUser, patchUser, updateToken } from './actions/UserAuth';
+import { GET_ORDER, getOrderNumber } from './actions/OrderDetails';
 
 export const userInitMiddleware = (store: any) => (next: any) => (action: any) => {
-    if (action.type === CHECK_AUTH_USER) {
-      console.log("Middleware");
-      const isAuthUser = !!localStorage.getItem("user");
-        if(isAuthUser) {
-          
-          const token = localStorage.getItem('tokens') ?? null;
-          if (token !== null) {
-            const { accessToken, refreshToken } = JSON.parse(token);
-            const decoder: JWTDeCode = jwtDecode(accessToken);
-            if (decoder && decoder.exp < Date.now() / 1000) {
-              // checking if the token is expired
-              store.dispatch(updateToken({ refreshToken, accessToken }));
-              return;
-            }
-          }
-          store.dispatch({ type: AUTH_USER, authorized: true });
-          return;
+  const token = localStorage.getItem('tokens') ?? null;
 
+  if (token !== null) {
+    const { accessToken, refreshToken } = JSON.parse(token);
+    const decoder: JWTDeCode = jwtDecode(accessToken);
+    const expiredToken = decoder && decoder.exp < Date.now() / 1000;
+
+    switch (action.type) {
+      case LOGOUT: {
+        if (expiredToken) {
+          next(updateToken({refreshToken, accessToken}));
+          setTimeout(() => {
+            next(logout({ refreshToken: store.getState().user.refreshToken }));
+          }, 1000)
         } else {
-          store.dispatch({ type: NO_AUTH_USER, authorized: false });
-          return;
+          next(logout({ refreshToken }));
         }
+
+        break;
+      }
+      case GET_USER: {
+        if (expiredToken) {
+          next(updateToken({refreshToken, accessToken}));
+          setTimeout(() => {
+            next(getUser({ accessToken: store.getState().user.accessToken }));
+          }, 1000)
+        } else {
+          next(getUser({ accessToken }));
+        }
+
+        break;
+      }
+      case PATCH_USER: {
+        if (expiredToken) {
+          next(updateToken({refreshToken, accessToken}));
+          setTimeout(() => {
+            next(patchUser(action.user, store.getState().user.accessToken));
+          }, 1000)
+        } else {
+          next(patchUser(action.user, accessToken));
+        }
+
+        break;
+      }
+      case GET_ORDER: {
+        if (expiredToken) {
+          next(updateToken({refreshToken, accessToken}));
+          setTimeout(() => {
+            next(getOrderNumber(action.ingredientIds, store.getState().user.accessToken));
+          }, 1000)
+        } else {
+          next(getOrderNumber(action.ingredientIds, accessToken));
+        }
+
+        break;
+      }
+      default:
+        break;
+    }
+  
+  } else {
+
+    if (action.type === LOGIN) {
+      next(login(action.user));
+      return;
     }
 
-    return next(action);
   }
+  next(action);
+}
+

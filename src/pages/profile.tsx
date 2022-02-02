@@ -1,46 +1,45 @@
 import { useState, ChangeEvent, useEffect, MouseEvent } from 'react';
 import { Input, Button }  from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink, Link } from 'react-router-dom';
-import { getUser, patchUser } from '../services/actions/UserInfo';
-import { logout } from '../services/actions/UserAuth';
+import { getInfoUser, patchInfoUser, logoutUser } from '../services/actions/UserAuth';
 import { RootState } from '../utils/types';
 import { useDispatch, useSelector } from 'react-redux';
 import AppHeader from '../components/AppHeader/AppHeader';
 import s from './pages.module.css';
 
 export function Profile() {
-  const { getUserInfoSuccess, userEmail, userName } = useSelector((store: RootState) => store.userInfo);
-  const {accessToken, refreshToken } = useSelector((store: RootState) => store.user);
+  const { getUserInfoSuccess } = useSelector((store: RootState) => store.user);
+  const { user }: any = useSelector((store: RootState) => store.user);
   const [data, setData] = useState({ email: '', name: '', password: '' });
   const [isEditing, setIsEditing] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUser({ accessToken }));
+    dispatch(getInfoUser());
   }, [dispatch]);
   
   useEffect(() => {
     if (getUserInfoSuccess) {
-        setData({...data, email: userEmail, name: userName });
+        setData({...data, email: user.email, name: user.name });
     }
-  }, [getUserInfoSuccess]);
+  }, [getUserInfoSuccess, user.email, user.name]);
 
   const handleSendData = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsEditing(false);
-    dispatch(patchUser(data, accessToken));
+    dispatch(patchInfoUser(data));
   }
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setIsEditing(true);
     setData({ ...data, [e.currentTarget.name]: e.currentTarget.value });
   }
   const handleDiscardСhanges = () => {
-    setData({...data, email: userEmail, name: userName });
+    setData({...data, email: user.email, name: user.name });
     setIsEditing(false);
   }
   const handleClickLogout = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    dispatch(logout({ refreshToken }));
+    dispatch(logoutUser());
   }
 
  return (

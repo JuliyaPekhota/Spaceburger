@@ -1,5 +1,9 @@
 import { BASE_URL } from '../../utils/constants';
 import { DELETE_INGREDIENTS } from '../actions/';
+
+export const getOrder = (ingredientIds: Array<string>) => ({ type: GET_ORDER, ingredientIds });
+
+export const GET_ORDER = 'GET_ORDER';
 export const ADD_INGREDIENT = 'ADD_INGREDIENT';
 export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
 

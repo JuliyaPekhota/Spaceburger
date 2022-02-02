@@ -49,7 +49,7 @@ export interface ILocation {
 }
 
 export interface ILocationFrom {
-  from: ILocation;
+  from: string;
 }
 
 export interface IToken {

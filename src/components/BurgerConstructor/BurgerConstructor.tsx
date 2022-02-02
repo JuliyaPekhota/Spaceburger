@@ -1,15 +1,15 @@
 import { FC, useState, useCallback, useMemo } from 'react';
 import { Button, CurrencyIcon, BurgerIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { RootState, ItemTypes, IIngredient } from '../../utils/types';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import Modal from '../../components/Modal/Modal';
 import { ADD_INGREDIENT_IN_ORDER, 
          ADD_INGREDIENT_BUN_IN_ORDER, 
          UPDATE_LOCATION_INGREDIENT_IN_ORDER } from '../../services/actions';
+import { getOrder } from '../../services/actions/OrderDetails';
 import { useSelector, useDispatch } from 'react-redux';
-import { getOrderNumber } from '../../services/actions/OrderDetails';
 import { useDrop } from 'react-dnd';
 import IngredientInOrder from '../IngredientInOrder/IngredientInOrder';
 import { v4 as uuidv4 } from 'uuid';
@@ -23,9 +23,8 @@ const BurgerConstructor: FC = () => {
     ingredientsInOrder
   } = useSelector((store: RootState) => store.ingredient);
   const { orderSuccess, orderRequest } = useSelector((store: RootState) => store.order);
-  const isLoggedIn = useSelector((store: RootState) => store.user.authorized);
-  const { accessToken } = useSelector((store: RootState) => store.user);
-  const history = useHistory();
+  const { authorized } = useSelector((store: RootState) => store.user);
+  const isLoggedIn = authorized;
 
   const [showModal, setshowModal] = useState(false);
   const sum = useMemo(
@@ -66,12 +65,11 @@ const BurgerConstructor: FC = () => {
   );
 
  const handleOpenModal = () => {
-  
   if (isLoggedIn) {
     setshowModal(true);
-    dispatch(getOrderNumber(ingredientIds, accessToken));
+    dispatch(getOrder(ingredientIds));
   } else {
-    history.push("/login");
+    <Redirect to="/login" />;
   }
 };
 

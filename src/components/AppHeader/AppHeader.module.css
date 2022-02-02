@@ -18,21 +18,18 @@
     display: flex;
     align-items: center;
 }
-.links, .burgerLink, .listLink, .loginLink {
+.links, li.links a {
     display: flex;
-}
-.burgerLink {
-    display: flex;
-}
-.burgerLink span {
-    color: #F2F2F3;
-}
-
-.listLink span, .loginLink span {
-    color:#8585AD;
 }
 .logo {
     justify-content: center;
     display: flex;
     flex: 1 1 auto;
+}
+a[class="pl-5 pr-5 mr-2 active"], a[class="pl-5 pr-5 active"] {
+    color:#F2F2F3;
+}
+a[class="pl-5 pr-5 mr-2 active"] svg,
+a[class="pl-5 pr-5 active"] svg {
+    fill: #F2F2F3;
 }

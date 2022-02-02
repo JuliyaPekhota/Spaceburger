@@ -8,15 +8,8 @@ import s from './pages.module.css';
 
 export function Register() {
   const [data, setData] = useState({ name: '', email: '', password: '' });
-  const { registerSuccess, refreshToken, accessToken } = useSelector((store: RootState) => store.register);
+  const { registerSuccess } = useSelector((store: RootState) => store.register);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (registerSuccess) {
-      const tokens = {"refreshToken": refreshToken, "accessToken": accessToken};
-      localStorage.setItem('tokens', JSON.stringify(tokens));
-    }
-  }, [registerSuccess, refreshToken, accessToken, dispatch]);
 
   const handleSendData = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();

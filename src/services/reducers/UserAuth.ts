@@ -2,14 +2,17 @@ import {
     POST_LOGIN_USER,
     LOGIN_USER_SUCCESS,
     LOGIN_USER_FAILED,
-    CHECK_AUTH_USER,
     LOGOUT,
-    AUTH_USER,
-    NO_AUTH_USER,
     POST_UPDATE_TOKEN,
+    UPDATE_TOKEN,
     UPDATE_TOKEN_SUCCESS,
     UPDATE_TOKEN_FAILED,
+    GET_INFO_USER,
+    GET_INFO_SUCCESS,
+    GET_INFO_FAILED,
+    PATCH_INFO_USER,
 } from '../actions/UserAuth';
+import { IRegistryUser } from '../../utils/types';
 
 const initialState = {
     loginRequest: false,
@@ -24,26 +27,20 @@ const initialState = {
     tokenFailed: false,
     tokenSuccess: false,
 
+    getUserInfoRequest: false,
+    getUserInfoFailed: false,
+    getUserInfoSuccess: false,
+
     accessToken: undefined,
     refreshToken: undefined,
     
     authorized: !!localStorage.getItem("user"),
-    user: void 0 // {} as IUser
+    user: JSON.parse(localStorage.getItem("user") ?? "null") as IRegistryUser || {}
 }
 
 export const userReducer = (state = initialState, action: any) => {
     switch (action.type) {
-        case CHECK_AUTH_USER: {
-            console.log("here CHECK_AUTH_USER");
-            return state;
-        }
-        case AUTH_USER || NO_AUTH_USER: {
-            return {
-                ...state,
-                authorized: action.authorized,
-            };
-        }
-        case POST_LOGIN_USER: {
+      case POST_LOGIN_USER: {
           return {
               ...state,
               loginRequest: true,
@@ -69,12 +66,11 @@ export const userReducer = (state = initialState, action: any) => {
         }
         case LOGOUT: {
             localStorage.clear();
-            console.log("authorized Logout false");
             return { 
                 ...state,
                 logoutSuccess: action.success,
                 logoutRequest: false,
-                user: void 0, //void 0,
+                user: void 0,
   
                 authorized: false,
             };
@@ -95,6 +91,14 @@ export const userReducer = (state = initialState, action: any) => {
                 tokenFailed: false,
             };
           }
+          case UPDATE_TOKEN: {
+            const tokens = {"refreshToken": action.refreshToken, "accessToken": action.accessToken};
+            localStorage.setItem('tokens', JSON.stringify(tokens));
+            localStorage.setItem('user', JSON.stringify({"email": action.user?.email, "name": action.user?.name}));
+            return { 
+                state
+            };
+          }
           case UPDATE_TOKEN_SUCCESS: {
             const tokens = {"refreshToken": action.refreshToken, "accessToken": action.accessToken};
             localStorage.setItem('tokens', JSON.stringify(tokens));
@@ -113,6 +117,30 @@ export const userReducer = (state = initialState, action: any) => {
                 tokenRequest: false,
                 tokenSuccess: false,
                 tokenFailed: true,
+            };
+          }
+          case GET_INFO_USER || PATCH_INFO_USER: {
+            return {
+                ...state,
+                getUserInfoRequest: true,
+                getUserInfoSuccess: false,
+                getUserInfoFailed: false,
+            };
+          }
+          case GET_INFO_SUCCESS: {
+            return { 
+                ...state,
+                user: action.user,
+                getUserInfoSuccess: action.success,
+                getUserInfoRequest: false,
+            };
+          }
+          case GET_INFO_FAILED: {
+            return { 
+                ...state,
+                getUserInfoRequest: false,
+                getUserInfoSuccess: false,
+                getUserInfoFailed: true,
             };
           }
         default: {

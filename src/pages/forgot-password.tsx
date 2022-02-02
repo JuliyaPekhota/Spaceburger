@@ -1,6 +1,6 @@
 import { useState, ChangeEvent } from 'react';
 import { Input, Button }  from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import { restoreEmail } from '../services/actions/PasswordReset';
 import { RootState } from '../utils/types';
 import { useDispatch, useSelector } from 'react-redux';

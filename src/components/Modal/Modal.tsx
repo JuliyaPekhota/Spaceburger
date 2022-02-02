@@ -24,7 +24,7 @@ const Modal = (props: IModal) => {
     
     const pressEsc = useCallback((e: KeyboardEvent) => {
         if(e.key === "Escape") {
-          props.onClose();
+          props?.onClose();
         }
       }, [props]
     )

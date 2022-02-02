@@ -1,14 +1,16 @@
 import { useState, ChangeEvent } from 'react';
 import { Input, Button }  from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../utils/types';
-import { useDispatch, useSelector } from 'react-redux';
-import s from './pages.module.css';
 import { sendNewPassword } from '../services/actions/PasswordReset';
 
+import s from './pages.module.css';
+
 export function ResetPassword() {
-  const [data, setData] = useState({ password: '', token: '' });
   const { resetPasswordSuccess } = useSelector((store: RootState) => store.passwordReset);
+  const [data, setData] = useState({ password: '', token: '' });
+
   const dispatch = useDispatch();
 
   const handleSendData = (e: ChangeEvent<HTMLFormElement>) => {
@@ -17,6 +19,10 @@ export function ResetPassword() {
   }
   const handleChangeData = (e: ChangeEvent<HTMLInputElement>) => {
     setData({ ...data, [e.currentTarget.name]: e.currentTarget.value });
+  }
+
+  if (resetPasswordSuccess) {
+    return <Redirect to="/login" />
   }
 
  return (

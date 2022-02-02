@@ -34,7 +34,7 @@ useEffect(() => {
             {ingredientsFailed && <p>Произошла ошибка при получении данных</p>}
             {ingredientsRequest && <Loader />}
             
-            {!ingredientsFailed && !ingredientsRequest && ingredientsSuccess && ingredients.length > 0 &&
+            {ingredientsSuccess && ingredients.length > 0 &&
             <DndProvider backend={HTML5Backend}>
               <BurgerIngredients />
               <BurgerConstructor />

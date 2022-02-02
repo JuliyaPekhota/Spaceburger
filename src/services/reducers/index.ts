@@ -3,7 +3,6 @@ import { idIngredientReducer } from './IngredientDetails';
 import { orderReducer } from './OrderDetails';
 import { passwordResetReducer } from './PasswordReset';
 import { registerReducer } from './Register';
-import { userInfoReducer } from './UserInfo'
 import { userReducer } from './UserAuth';
 import {
     GET_INGREDIENTS_REQUEST,
@@ -105,6 +104,5 @@ export const rootReducer = combineReducers({
     order: orderReducer,
     passwordReset: passwordResetReducer,
     register: registerReducer,
-    userInfo: userInfoReducer,
     user: userReducer,
 });

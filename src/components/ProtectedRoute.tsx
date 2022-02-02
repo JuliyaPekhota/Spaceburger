@@ -1,25 +1,25 @@
 import { useSelector } from 'react-redux';
-import { Route, Redirect } from 'react-router-dom';
-import { RootState } from '../utils/types';
+import { Route, Redirect, useLocation } from 'react-router-dom';
+import { RootState, ILocationFrom } from '../utils/types';
 
 export const ProtectedRoute = ({ children, ...rest }: any) => {
-  const isLoggedIn = useSelector((store: RootState) => store.user.authorized);
+  const { authorized } = useSelector((store: RootState) => store.user);
+  const isLoggedIn = authorized;
+  const { pathname, state } = useLocation<ILocationFrom>();
 
-  console.log("ProtectedRoute" +isLoggedIn);
   return (
       <Route 
         {...rest}
-        render={({ location }) =>
-         isLoggedIn ? (
+        render={() => {
+          return isLoggedIn ? (
             children
           ) : (
-            <Redirect
-                to={{
-                  pathname: '/login',
-                  state: { from: location.pathname }
-                }}
-            />
+            <Redirect to={
+              {pathname: state?.from || '/login',
+              state: {from: pathname }
+            }}/>
           )
+         }
       }
       />
     );
