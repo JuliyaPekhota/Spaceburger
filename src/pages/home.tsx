@@ -1,6 +1,5 @@
 
 import { useEffect } from 'react';
-import AppHeader from '../components/AppHeader/AppHeader';
 import BurgerIngredients from '../components/BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../components/BurgerConstructor/BurgerConstructor';
 import { RootState } from '../utils/types';
@@ -28,8 +27,6 @@ useEffect(() => {
 }, [dispatch]);
 
     return (
-        <>
-          <AppHeader />
           <main>
             {ingredientsFailed && <p>Произошла ошибка при получении данных</p>}
             {ingredientsRequest && <Loader />}
@@ -41,6 +38,5 @@ useEffect(() => {
             </DndProvider>
             }
           </main>
-        </>
       );
 }

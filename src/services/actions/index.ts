@@ -9,6 +9,8 @@ export const DELETE_INGREDIENTS = 'DELETE_INGREDIENTS';
 export const ADD_INGREDIENT_BUN_IN_ORDER = 'ADD_INGREDIENT_BUN_IN_ORDER';
 export const UPDATE_LOCATION_INGREDIENT_IN_ORDER = 'UPDATE_LOCATION_INGREDIENT_IN_ORDER';
 
+const getIngredientsFailed = () => ({ type: GET_INGREDIENTS_FAILED });
+
 export function getIngredients() {
     return function(dispatch: any) { 
       dispatch({
@@ -18,9 +20,7 @@ export function getIngredients() {
       fetch(`${BASE_URL}ingredients`)
       .then(response => {
         if (!response.ok) {
-          dispatch({
-            type: GET_INGREDIENTS_FAILED
-          });
+          dispatch(getIngredientsFailed());
           throw new Error('Network response was not OK');
         }
         return response.json();
@@ -33,9 +33,7 @@ export function getIngredients() {
         });
       })
       .catch(error => {
-        dispatch({
-            type: GET_INGREDIENTS_FAILED
-        });
+        dispatch(getIngredientsFailed());
         console.error('There has been a problem with fetch operation:', error);
       });
     }

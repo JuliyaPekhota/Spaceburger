@@ -4,7 +4,6 @@ import { NavLink, Link } from 'react-router-dom';
 import { getInfoUser, patchInfoUser, logoutUser } from '../services/actions/UserAuth';
 import { RootState } from '../utils/types';
 import { useDispatch, useSelector } from 'react-redux';
-import AppHeader from '../components/AppHeader/AppHeader';
 import s from './pages.module.css';
 
 export function Profile() {
@@ -20,7 +19,7 @@ export function Profile() {
   
   useEffect(() => {
     if (getUserInfoSuccess) {
-        setData({...data, email: user.email, name: user.name });
+        setData(state => ({ ...state, email: user.email, name: user.name }));
     }
   }, [getUserInfoSuccess, user.email, user.name]);
 
@@ -43,8 +42,7 @@ export function Profile() {
   }
 
  return (
-    <>
-        <AppHeader /> 
+    <> 
         <div className={`${s.profile} pl-5 pr-5`}>
             <div className='sidebar'>
                 <nav className='text text_type_main-medium mb-20'>

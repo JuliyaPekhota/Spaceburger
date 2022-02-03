@@ -1,9 +1,8 @@
 import {
     POST_PASSWORD_REQUEST,
     GET_RESTORE_EMAIL_SUCCESS,
-    GET_RESTORE_EMAIL_FAILED,
-    SET_NEW_PASSWORD_SUCCESS,
-    SET_NEW_PASSWORD_FAILED
+    FAILED,
+    SET_NEW_PASSWORD_SUCCESS
 } from '../actions/PasswordReset';
 
 const initialState = {
@@ -29,7 +28,7 @@ export const passwordResetReducer = (state = initialState, action: any) => {
               resetPasswordRequest: false,
           };
         }
-        case GET_RESTORE_EMAIL_FAILED || SET_NEW_PASSWORD_FAILED: {
+        case FAILED: {
           return { 
               ...state,
               resetPasswordRequest: false,

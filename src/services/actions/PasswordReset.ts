@@ -3,10 +3,11 @@ import { IPasswordData } from '../../utils/types';
 
 export const POST_PASSWORD_REQUEST = 'POST_PASSWORD_REQUEST';
 export const GET_RESTORE_EMAIL_SUCCESS = 'GET_RESTORE_EMAIL_SUCCESS';
-export const GET_RESTORE_EMAIL_FAILED = 'GET_RESTORE_EMAIL_FAILED';
+export const FAILED = 'FAILED';
 
 export const SET_NEW_PASSWORD_SUCCESS = 'SET_NEW_PASSWORD_SUCCESS';
-export const SET_NEW_PASSWORD_FAILED = 'SET_NEW_PASSWORD_FAILED';
+
+const Failed = () => ({ type: FAILED });
 
 export function restoreEmail(email: string) {
     return function(dispatch: any) { 
@@ -23,9 +24,7 @@ export function restoreEmail(email: string) {
       })
       .then(response => {
         if (!response.ok) {
-          dispatch({
-            type: GET_RESTORE_EMAIL_FAILED
-          });
+          dispatch(Failed());
           throw new Error('Network response was not OK');
         }
         return response.json();
@@ -38,9 +37,7 @@ export function restoreEmail(email: string) {
         });  
       })
       .catch(error => {
-        dispatch({
-            type: GET_RESTORE_EMAIL_FAILED
-        });
+        dispatch(Failed());
         console.error('There has been a problem with fetch operation:', error);
       });
     }
@@ -61,9 +58,7 @@ export function sendNewPassword(data: IPasswordData) {
     })
     .then(response => {
       if (!response.ok) {
-        dispatch({
-          type: SET_NEW_PASSWORD_FAILED
-        });
+        dispatch(Failed());
         throw new Error('Network response was not OK');
       }
       return response.json();
@@ -76,9 +71,7 @@ export function sendNewPassword(data: IPasswordData) {
       });  
     })
     .catch(error => {
-      dispatch({
-          type: SET_NEW_PASSWORD_FAILED
-      });
+      dispatch(Failed());
       console.error('There has been a problem with fetch operation:', error);
     });
   }

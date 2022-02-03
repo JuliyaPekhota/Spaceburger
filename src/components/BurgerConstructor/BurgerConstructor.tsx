@@ -1,7 +1,7 @@
 import { FC, useState, useCallback, useMemo } from 'react';
 import { Button, CurrencyIcon, BurgerIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { RootState, ItemTypes, IIngredient } from '../../utils/types';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import Modal from '../../components/Modal/Modal';
@@ -24,6 +24,7 @@ const BurgerConstructor: FC = () => {
   } = useSelector((store: RootState) => store.ingredient);
   const { orderSuccess, orderRequest } = useSelector((store: RootState) => store.order);
   const { authorized } = useSelector((store: RootState) => store.user);
+  const history = useHistory();
   const isLoggedIn = authorized;
 
   const [showModal, setshowModal] = useState(false);
@@ -69,7 +70,7 @@ const BurgerConstructor: FC = () => {
     setshowModal(true);
     dispatch(getOrder(ingredientIds));
   } else {
-    <Redirect to="/login" />;
+    history.push("/login");
   }
 };
 

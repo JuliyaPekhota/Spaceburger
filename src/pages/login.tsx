@@ -9,7 +9,7 @@ import s from './pages.module.css';
 export function LoginPage() {
   const [data, setData] = useState({ email: '', password: '' });
   const dispatch = useDispatch();
-  const { pathname, state } = useLocation<ILocationFrom>();
+  const { pathname } = useLocation<ILocationFrom>();
   const handleSendData = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(loginUser(data));

@@ -4,13 +4,14 @@ import {
     LOGIN_USER_FAILED,
     LOGOUT,
     POST_UPDATE_TOKEN,
-    UPDATE_TOKEN,
     UPDATE_TOKEN_SUCCESS,
     UPDATE_TOKEN_FAILED,
     GET_INFO_USER,
     GET_INFO_SUCCESS,
     GET_INFO_FAILED,
     PATCH_INFO_USER,
+    INIT_USER,
+    AUTHORIZED
 } from '../actions/UserAuth';
 import { IRegistryUser } from '../../utils/types';
 
@@ -34,13 +35,22 @@ const initialState = {
     accessToken: undefined,
     refreshToken: undefined,
     
-    authorized: !!localStorage.getItem("user"),
+    authorized: false,
     user: JSON.parse(localStorage.getItem("user") ?? "null") as IRegistryUser || {}
 }
 
 export const userReducer = (state = initialState, action: any) => {
     switch (action.type) {
-      case POST_LOGIN_USER: {
+        case AUTHORIZED: {
+          return state;
+        }
+        case INIT_USER: {
+          return {
+            ...state,
+            authorized: true,
+          }  
+        }
+        case POST_LOGIN_USER: {
           return {
               ...state,
               loginRequest: true,
@@ -89,14 +99,6 @@ export const userReducer = (state = initialState, action: any) => {
                 tokenRequest: true,
                 tokenSuccess: false,
                 tokenFailed: false,
-            };
-          }
-          case UPDATE_TOKEN: {
-            const tokens = {"refreshToken": action.refreshToken, "accessToken": action.accessToken};
-            localStorage.setItem('tokens', JSON.stringify(tokens));
-            localStorage.setItem('user', JSON.stringify({"email": action.user?.email, "name": action.user?.name}));
-            return { 
-                state
             };
           }
           case UPDATE_TOKEN_SUCCESS: {

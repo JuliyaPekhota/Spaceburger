@@ -1,14 +1,8 @@
 import { BASE_URL } from '../../utils/constants';
 import { IRegistryUser, IToken } from '../../utils/types';
 
-export const loginUser = (user: IRegistryUser) => ({ type: LOGIN, user });
-export const logoutUser = () => ({ type: LOGOUT });
-export const getInfoUser = () => ({ type: GET_USER });
-export const patchInfoUser = (user: IRegistryUser) => ({ type: PATCH_USER, user });
-
-export const UPDATE_TOKEN = 'UPDATE_TOKEN';
-//export const AUTH_USER = 'AUTH_USER';
-
+export const INIT_USER = 'INIT_USER';
+export const AUTHORIZED = 'AUTHORIZED';
 export const GET_USER = 'GET_USER';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
@@ -32,6 +26,17 @@ export const GET_INFO_FAILED = 'GET_INFO_FAILED';
 
 export const PATCH_INFO_USER = 'PATCH_INFO_USER';
 
+export const authUser = () => ({ type: AUTHORIZED });
+export const loginUser = (user: IRegistryUser) => ({ type: LOGIN, user });
+export const logoutUser = () => ({ type: LOGOUT });
+export const getInfoUser = () => ({ type: GET_USER });
+export const patchInfoUser = (user: IRegistryUser) => ({ type: PATCH_USER, user });
+
+const loginUserFailed = () => ({ type: LOGIN_USER_FAILED });
+const getInfoFailed = () => ({ type: GET_INFO_FAILED });
+const updateTokenFailed = () => ({ type: UPDATE_TOKEN_FAILED });
+const logoutFailed = () => ({ type: LOGOUT_FAILED });
+
 export const login = (data: IRegistryUser) => {
   return (dispatch: any) => { 
       dispatch({
@@ -47,9 +52,7 @@ export const login = (data: IRegistryUser) => {
       })
       .then(response => {
         if (!response.ok) {
-          dispatch({
-            type: LOGIN_USER_FAILED
-          });
+          dispatch(loginUserFailed());
           throw new Error('Network response was not OK');
         }
         return response.json();
@@ -64,9 +67,7 @@ export const login = (data: IRegistryUser) => {
         });  
       })
       .catch(error => {
-        dispatch({
-            type: LOGIN_USER_FAILED
-        });
+        dispatch(loginUserFailed());
         console.error('There has been a problem with fetch operation:', error);
       });
     }
@@ -87,9 +88,7 @@ export const logout = (data: IToken) => {
       })
       .then(response => {
         if (!response.ok) {
-          dispatch({
-            type: LOGOUT_FAILED
-          });
+          dispatch(logoutFailed());
           throw new Error('Network response was not OK');
         }
         return response.json();
@@ -101,9 +100,7 @@ export const logout = (data: IToken) => {
         });
       })
       .catch(error => {
-        dispatch({
-            type: LOGOUT_FAILED
-        });
+        dispatch(logoutFailed());
         console.error('There has been a problem with fetch operation:', error);
       });
     }
@@ -125,9 +122,7 @@ export function updateToken(data: IToken) {
       })
       .then(response => {
         if (!response.ok) {
-          dispatch({
-            type: UPDATE_TOKEN_FAILED
-          });
+          dispatch((updateTokenFailed()));
           throw new Error('Network response was not OK');
         }
         return response.json();
@@ -141,9 +136,7 @@ export function updateToken(data: IToken) {
         });
       })
       .catch(error => {
-        dispatch({
-            type: UPDATE_TOKEN_FAILED
-        });
+        dispatch(updateTokenFailed());
         console.error('There has been a problem with fetch operation:', error);
       });
     }
@@ -164,10 +157,7 @@ export function getUser(data: IToken) {
       })
       .then(response => {
         if (!response.ok) {
-            dispatch({
-            type: GET_INFO_FAILED,
-            status: response.status
-          });
+            dispatch(getInfoFailed());
           throw new Error('Network response was not OK');
         }
         return response.json();
@@ -180,9 +170,7 @@ export function getUser(data: IToken) {
         });  
       })
       .catch(error => {
-        dispatch({
-            type: GET_INFO_FAILED
-        });
+        dispatch(getInfoFailed());
         console.error('There has been a problem with fetch operation:', error);
       });
     }
@@ -204,9 +192,7 @@ export function patchUser(data: IRegistryUser, token: string) {
       })
       .then(response => {
         if (!response.ok) {
-          dispatch({
-            type: GET_INFO_FAILED
-          });
+          dispatch(getInfoFailed());
           throw new Error('Network response was not OK');
         }
         return response.json();
@@ -219,9 +205,7 @@ export function patchUser(data: IRegistryUser, token: string) {
         });  
       })
       .catch(error => {
-        dispatch({
-            type: GET_INFO_FAILED
-        });
+        dispatch(getInfoFailed());
         console.error('There has been a problem with fetch operation:', error);
       });
     }

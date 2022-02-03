@@ -5,6 +5,8 @@ export const POST_REGISTRY_USER = 'POST_REGISTRY_USER';
 export const REGISTRY_USER_SUCCESS = 'REGISTRY_USER_SUCCESS';
 export const REGISTRY_USER_FAILED = 'REGISTRY_USER_FAILED';
 
+const registryUserFailed = () => ({ type: REGISTRY_USER_FAILED });
+
 export function registry(data: IRegistryUser) {
     return function(dispatch: any) { 
       dispatch({
@@ -20,9 +22,7 @@ export function registry(data: IRegistryUser) {
       })
       .then(response => {
         if (!response.ok) {
-          dispatch({
-            type: REGISTRY_USER_FAILED
-          });
+          dispatch(registryUserFailed());
           throw new Error('Network response was not OK');
         }
         return response.json();
@@ -36,9 +36,7 @@ export function registry(data: IRegistryUser) {
         });  
       })
       .catch(error => {
-        dispatch({
-            type: REGISTRY_USER_FAILED
-        });
+        dispatch(registryUserFailed());
         console.error('There has been a problem with fetch operation:', error);
       });
     }

@@ -1,4 +1,4 @@
-import { useEffect, useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { Input, Button }  from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import { RootState } from '../utils/types';
