@@ -14,6 +14,7 @@ import { useDrop } from 'react-dnd';
 import IngredientInOrder from '../IngredientInOrder/IngredientInOrder';
 import { v4 as uuidv4 } from 'uuid';
 import { Loader } from '../Loader/Loader';
+import cn from "classnames";
 
 import s from './BurgerConstructor.module.css';
 
@@ -33,6 +34,11 @@ const BurgerConstructor: FC = () => {
     [ingredientsInOrder]
   );
   const dispatch = useDispatch();
+
+  const isBunInOrder = useMemo(
+    () => ingredientsInOrder.some(({ type }) => type === 'bun'),
+    [ingredientsInOrder]
+  );
 
   const ingredientIds = ingredientsInOrder.map(card => card?._id);
   
@@ -118,7 +124,12 @@ const bunTopBottom = (position: string) => {
                 {
                 sum > 0 && <span className={`${s.price} text text_type_digits-medium`}>{sum} <CurrencyIcon type="primary" /></span>
                 }
-                <Button type="primary" size="medium" onClick={handleOpenModal}>
+                <Button 
+                  type="primary" 
+                  size="medium" 
+                  onClick={handleOpenModal}
+                  disabled={!isBunInOrder}
+                >
                   Оформить заказ
                 </Button>
               </div>

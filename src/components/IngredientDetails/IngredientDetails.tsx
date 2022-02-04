@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState, IIngredient } from '../../utils/types';
 import { useParams } from "react-router-dom";
 import { getIngredients } from '../../services/actions';
-import AppHeader from '../../components/AppHeader/AppHeader';
 
 import s from './IngredientDetails.module.css';
 
@@ -25,7 +24,6 @@ const IngredientDetails: FC<IPropsIngredientDetails> = ({ type }) => {
 
     return (
         <>
-            {typeIsPage && <AppHeader />}
             {ingredientsSuccess && ingredients.length > 0 &&
              ingredients
              .filter(({ _id }: IIngredient) => _id === id)
