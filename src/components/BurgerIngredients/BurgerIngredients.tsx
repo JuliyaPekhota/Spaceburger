@@ -77,9 +77,9 @@ const BurgerIngredients: FC = () => {
                         <section className={`${s.ingredients} mt-6 mb-10 mr-4 ml-4`}>
                             {
                               ingredients
-                              .filter((ingredient: IIngredient) => ingredient.type === tab)
-                              .map((ingredient: IIngredient) => 
-                                    <IngredientInList key={ingredient._id} _id={ingredient._id} />
+                              .filter(({ type }: IIngredient) => type === tab)
+                              .map(({ _id }: IIngredient) => 
+                                  <IngredientInList key={_id} _id={_id} />
                               )
                             }
                         </section>
@@ -91,7 +91,7 @@ const BurgerIngredients: FC = () => {
         )
     }
    
-    return ( 
+    return (
             <section className={`${s.root} mb-10`}>
                 <h1 className='text text_type_main-large mb-5'>Соберите бургер</h1>
                 {tabs()}

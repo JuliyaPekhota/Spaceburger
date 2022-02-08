@@ -1,18 +1,20 @@
-import { FC, useState, useCallback } from 'react';
+import { FC, useState, useCallback, useMemo } from 'react';
 import { Button, CurrencyIcon, BurgerIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useHistory } from 'react-router-dom';
 import { RootState, ItemTypes, IIngredient } from '../../utils/types';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import Modal from '../../components/Modal/Modal';
 import { ADD_INGREDIENT_IN_ORDER, 
          ADD_INGREDIENT_BUN_IN_ORDER, 
          UPDATE_LOCATION_INGREDIENT_IN_ORDER } from '../../services/actions';
+import { getOrder } from '../../services/actions/OrderDetails';
 import { useSelector, useDispatch } from 'react-redux';
-import { getOrderNumber } from '../../services/actions/OrderDetails';
 import { useDrop } from 'react-dnd';
 import IngredientInOrder from '../IngredientInOrder/IngredientInOrder';
 import { v4 as uuidv4 } from 'uuid';
 import { Loader } from '../Loader/Loader';
+import cn from "classnames";
 
 import s from './BurgerConstructor.module.css';
 
@@ -22,10 +24,21 @@ const BurgerConstructor: FC = () => {
     ingredientsInOrder
   } = useSelector((store: RootState) => store.ingredient);
   const { orderSuccess, orderRequest } = useSelector((store: RootState) => store.order);
+  const { authorized } = useSelector((store: RootState) => store.user);
+  const history = useHistory();
+  const isLoggedIn = authorized;
 
   const [showModal, setshowModal] = useState(false);
-  const sum = ingredientsInOrder.reduce((sum: any, current: any) => current.type === 'bun' ? sum + current.price * 2 : sum + current.price, 0);
+  const sum = useMemo(
+    () => ingredientsInOrder.reduce((sum: any, current: any) => current.type === 'bun' ? sum + current.price * 2 : sum + current.price, 0),
+    [ingredientsInOrder]
+  );
   const dispatch = useDispatch();
+
+  const isBunInOrder = useMemo(
+    () => ingredientsInOrder.some(({ type }) => type === 'bun'),
+    [ingredientsInOrder]
+  );
 
   const ingredientIds = ingredientsInOrder.map(card => card?._id);
   
@@ -59,8 +72,12 @@ const BurgerConstructor: FC = () => {
   );
 
  const handleOpenModal = () => {
-  setshowModal(true);
-  dispatch(getOrderNumber(ingredientIds));
+  if (isLoggedIn) {
+    setshowModal(true);
+    dispatch(getOrder(ingredientIds));
+  } else {
+    history.push("/login");
+  }
 };
 
 const handleCloseModal = () => setshowModal(false);
@@ -107,7 +124,12 @@ const bunTopBottom = (position: string) => {
                 {
                 sum > 0 && <span className={`${s.price} text text_type_digits-medium`}>{sum} <CurrencyIcon type="primary" /></span>
                 }
-                <Button type="primary" size="medium" onClick={handleOpenModal}>
+                <Button 
+                  type="primary" 
+                  size="medium" 
+                  onClick={handleOpenModal}
+                  disabled={!isBunInOrder}
+                >
                   Оформить заказ
                 </Button>
               </div>

@@ -7,20 +7,12 @@
     border-radius: 5%;
     position: relative;
   }
-
-  .modal section{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .close {
+.close {
     position: absolute;
     top: 0;
     right: 0;
     cursor: pointer;
 }
-
 .head {
   align-self: flex-start;
   line-height: 1.67em;

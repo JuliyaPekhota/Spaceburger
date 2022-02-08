@@ -1,5 +1,9 @@
 import { BASE_URL } from '../../utils/constants';
 import { DELETE_INGREDIENTS } from '../actions/';
+
+export const getOrder = (ingredientIds: Array<string>) => ({ type: GET_ORDER, ingredientIds });
+
+export const GET_ORDER = 'GET_ORDER';
 export const ADD_INGREDIENT = 'ADD_INGREDIENT';
 export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
 
@@ -7,7 +11,7 @@ export const POST_ORDER_NUMBER_REQUEST = 'POST_ORDER_NUMBER_REQUEST';
 export const GET_ORDER_NUMBER_SUCCESS = 'GET_ORDER_NUMBER_SUCCESS';
 export const GET_ORDER_NUMBER_FAILED = 'GET_ORDER_NUMBER_FAILED';
 
-export function getOrderNumber(ids: Array<string>) {
+export function getOrderNumber(ids: Array<string>, token: string) {
     return function(dispatch: any) { 
       dispatch({
             type: POST_ORDER_NUMBER_REQUEST
@@ -16,7 +20,8 @@ export function getOrderNumber(ids: Array<string>) {
       fetch(`${BASE_URL}orders`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': token,
         },
         body: JSON.stringify({"ingredients": ids})
       })
