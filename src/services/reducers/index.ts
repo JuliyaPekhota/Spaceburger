@@ -1,9 +1,7 @@
+
 import { combineReducers } from 'redux';
-import { idIngredientReducer } from './IngredientDetails';
-import { orderReducer } from './OrderDetails';
-import { passwordResetReducer } from './PasswordReset';
-import { registerReducer } from './Register';
-import { userReducer } from './UserAuth';
+import { orderReducer, TOrderState, TOrderAction } from './OrderDetails';
+import { userReducer, TUserState, TUserAction } from './User';
 import {
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS,
@@ -12,20 +10,37 @@ import {
     ADD_INGREDIENT_IN_ORDER,
     DELETE_INGREDIENT_IN_ORDER,
     ADD_INGREDIENT_BUN_IN_ORDER,
-    UPDATE_LOCATION_INGREDIENT_IN_ORDER
+    UPDATE_LOCATION_INGREDIENT_IN_ORDER,
+    CLOSE_MODAL_DETAILS,
+    OPEN_MODAL_DETAILS
 } from '../actions';
 import update from 'immutability-helper';
+import { IIngredient, TActions, TActionsCreators } from '../../utils/types';
+import * as ingredientActions from '../actions/actionsIngredient';
 
-const initialState = {
+type TIngredientState = {
+  ingredientsRequest: boolean;
+  ingredientsFailed: boolean;
+  ingredientsSuccess: boolean;
+  openIngredientId: string | null;
+  ingredients: IIngredient[];
+  ingredientsInOrder: IIngredient[];
+};
+
+const initialState: TIngredientState = {
     ingredientsRequest: false,
     ingredientsFailed: false,
     ingredientsSuccess: false,
 
-    ingredients: [] as any[],
-    ingredientsInOrder: [] as any[],
+    openIngredientId: null,
+
+    ingredients: [] as IIngredient[],
+    ingredientsInOrder: [] as IIngredient[],
 }
 
-export const ingredientsReducer = (state = initialState, action: any) => {
+type TIngredientAction = TActions<TActionsCreators<typeof ingredientActions>>;
+
+export const ingredientsReducer = (state = initialState, action: TIngredientAction): TIngredientState => {
     switch (action.type) {
       case GET_INGREDIENTS_REQUEST: {
         return {
@@ -39,7 +54,7 @@ export const ingredientsReducer = (state = initialState, action: any) => {
         return { 
             ...state, 
             ingredients: action.ingredients, 
-            ingredientsSuccess: action.isIngredientsLodaded,
+            ingredientsSuccess: action.success,
             ingredientsRequest: false, 
         };
       }
@@ -56,7 +71,7 @@ export const ingredientsReducer = (state = initialState, action: any) => {
           ...state,
           ingredientsInOrder: [
             ...state.ingredientsInOrder,
-            ...state.ingredients.filter(item => item._id === action._id).map((item: any) => item ? {...item, id: action.id } : item),
+            ...state.ingredients.filter(item => item._id === action._id).map(item => item ? {...item, id: action.id } : item),
           ],
         };
       }
@@ -92,17 +107,34 @@ export const ingredientsReducer = (state = initialState, action: any) => {
           }),
         };
       }
-          default: {
-              return state
-          }
+      case OPEN_MODAL_DETAILS: {
+        return {
+            ...state,
+            openIngredientId: action._id,
+        };
+      }
+      case CLOSE_MODAL_DETAILS: {
+        return { 
+            ...state,
+            openIngredientId: state.openIngredientId = null,
+        };
+      }
+      default: {
+        return state
+      }
     }
 };
+
+export type TAppState = {
+  ingredient: TIngredientState,
+  order: TOrderState,
+  user: TUserState
+}
+
+export type TAppAction = TUserAction | TOrderAction | TIngredientAction;
   
-export const rootReducer = combineReducers({
+export const rootReducer = combineReducers<TAppState>({
     ingredient: ingredientsReducer,
-    idOpenIngredient: idIngredientReducer,
     order: orderReducer,
-    passwordReset: passwordResetReducer,
-    register: registerReducer,
     user: userReducer,
 });

@@ -1,38 +1,30 @@
 import { MouseEvent } from 'react';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../utils/hooks';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import { HomePage, LoginPage, Register, ForgotPassword, ResetPassword, Profile/*, NotFound404*/ } from '../pages';
-import IngredientDetails from '../components/IngredientDetails/IngredientDetails';
+import { IngredientDetails } from '../components/IngredientDetails';
 import ProfileOrders from '../components/ProfileOrders/ProfileOrders';
 import { ProtectedRoute } from './ProtectedRoute';
 import { PublicRoute } from './PublicRoute';
-import Modal from './Modal/Modal';
-import { CLOSE_MODAL_DETAILS } from '../services/actions/IngredientDetails';
-import { ILocation } from '../utils/types';
-
-interface IPropsModal {
-  modal?: string
-}
+import { Modal } from './Modal';
+import { closeModalDetails } from '../services/actions/actionsIngredient';
+import { ILocationModal } from '../utils/types';
 
 const SwitchRoute = () => {
-  const dispatch = useDispatch();
-  const location = useLocation<ILocation>();
-  const { state }: any = location;
-  const modal = location.state && (location.state as IPropsModal).hasOwnProperty("modal");
-  
+  const dispatch = useAppDispatch();
+  const location = useLocation<{ modal: ILocationModal<unknown> }>();
+  const modal = location.state && location.state?.modal;
   const history = useHistory();
 
   const handleCloseModal = (event: MouseEvent | undefined) => {
     event?.stopPropagation();
     history.goBack();
-    dispatch({
-        type: CLOSE_MODAL_DETAILS
-    });
+    dispatch(closeModalDetails());
 }  
 
   return (
       <>
-        <Switch location={state?.modal || location}>
+        <Switch location={modal || location}>
           <Route path="/" exact={true}>
             <HomePage />
           </Route>

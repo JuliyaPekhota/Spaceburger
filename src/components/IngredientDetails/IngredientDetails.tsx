@@ -1,24 +1,25 @@
 import { FC, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, IIngredient } from '../../utils/types';
+import { useAppThunkDispatch, useAppSelector } from '../../utils/hooks';
+import { IIngredient } from '../../utils/types';
+import { TAppState } from '../../services/reducers';
 import { useParams } from "react-router-dom";
 import { getIngredients } from '../../services/actions';
 
 import s from './IngredientDetails.module.css';
 
-interface IPropsIngredientDetails {
+interface IIngredientDetailsProps {
     type?: string;
 }
 
-const IngredientDetails: FC<IPropsIngredientDetails> = ({ type }) => {
-    const { ingredients, ingredientsSuccess } = useSelector((store: RootState) => store.ingredient);
+export const IngredientDetails: FC<IIngredientDetailsProps> = ({ type }) => {
+    const { ingredients, ingredientsSuccess } = useAppSelector((store: TAppState) => store.ingredient);
     const typeIsPage = type === "page";
-    const { id }: any = useParams();
-    const dispatch = useDispatch();
+    const { id } = useParams<{ id?: string }>();
+    const dispatch = useAppThunkDispatch();
 
     useEffect(() => {
         if (typeIsPage) {
-            dispatch(getIngredients())
+           dispatch(getIngredients())
         }
       }, [typeIsPage, dispatch]);
 
@@ -54,5 +55,4 @@ const IngredientDetails: FC<IPropsIngredientDetails> = ({ type }) => {
             }
         </>
     )
-}           
-export default IngredientDetails;            
+}        

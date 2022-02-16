@@ -1,17 +1,18 @@
 import { FC, useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Scrollbars } from 'react-custom-scrollbars';
-import IngredientInList from '../IngredientInList/IngredientInList';
+import { IngredientInList } from '../IngredientInList';
 import { useSelector } from 'react-redux';
-import { RootState, IIngredient } from '../../utils/types';
+import { IIngredient } from '../../utils/types';
+import { TAppState } from '../../services/reducers';
 
 import cn from "classnames";
 import s from './BurgerIngredients.module.css';
 
 const THUMB_HEIGHT = 230;
 
-const BurgerIngredients: FC = () => {
-    const { ingredients } = useSelector((store: RootState) => store.ingredient);
+export const BurgerIngredients: FC = () => {
+    const { ingredients } = useSelector((store: TAppState) => store.ingredient);
 
     const sections = ['bun', 'sauce', 'main'];
     const bunRef = useRef<HTMLDivElement>(null);
@@ -98,5 +99,3 @@ const BurgerIngredients: FC = () => {
             </section>
     )
 }
-  
-export default BurgerIngredients; 
