@@ -1,17 +1,20 @@
+import { Middleware } from "redux";
+import { initUser } from './actions/actionsUser';
 import {
   LOGIN,
   LOGOUT,
   GET_USER,
   PATCH_USER,
-  INIT_USER,
   AUTHORIZED
-} from './actions/UserAuth';
+} from './actions/User';
 import jwtDecode from "jwt-decode";
 import { JWTDeCode } from '../utils/types';
-import { login, logout, getUser, patchUser, updateToken } from './actions/UserAuth';
+import { TAppState, TAppAction } from '../services/reducers';
+import { login, logout, getUser, patchUser, updateToken } from './actions/User';
 import { GET_ORDER, getOrderNumber } from './actions/OrderDetails';
+import { TThunkDispatch } from '../utils/hooks';
 
-export const userInitMiddleware = (store: any) => (next: any) => (action: any) => {
+export const userInitMiddleware: Middleware<{}, TAppState> = store => (next: TThunkDispatch)  => (action: TAppAction) => {
   const token = localStorage.getItem('tokens') ?? null;
     
         if (token !== null) {
@@ -21,7 +24,7 @@ export const userInitMiddleware = (store: any) => (next: any) => (action: any) =
 
           switch (action.type) {
             case AUTHORIZED: {
-              next({ type: INIT_USER });
+              next(initUser());
               break;
             }
             case LOGOUT: {
@@ -52,7 +55,7 @@ export const userInitMiddleware = (store: any) => (next: any) => (action: any) =
               if (expiredToken) {
                 next(updateToken({refreshToken, accessToken}));
                 setTimeout(() => {
-                  next(patchUser(action.user, store.getState().user.accessToken));
+                  next(patchUser(action.user, store.getState().user.accessToken ?? accessToken));
                 }, 1000)
               } else {
                 next(patchUser(action.user, accessToken));
@@ -64,7 +67,7 @@ export const userInitMiddleware = (store: any) => (next: any) => (action: any) =
               if (expiredToken) {
                 next(updateToken({refreshToken, accessToken}));
                 setTimeout(() => {
-                  next(getOrderNumber(action.ingredientIds, store.getState().user.accessToken));
+                  next(getOrderNumber(action.ingredientIds, store.getState().user.accessToken ?? accessToken));
                 }, 1000)
               } else {
                 next(getOrderNumber(action.ingredientIds, accessToken));

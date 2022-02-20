@@ -1,15 +1,16 @@
 import { useState, ChangeEvent } from 'react';
 import { Input, Button }  from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { RootState } from '../utils/types';
-import { registry } from '../services/actions/Register';
-import { useDispatch, useSelector } from 'react-redux';
+import { TAppState } from '../services/reducers';
+import { registry } from '../services/actions/User';
+import { useAppThunkDispatch, useAppSelector } from '../utils/hooks';
+
 import s from './pages.module.css';
 
 export function Register() {
   const [data, setData] = useState({ name: '', email: '', password: '' });
-  const { registerSuccess } = useSelector((store: RootState) => store.register);
-  const dispatch = useDispatch();
+  const { registerSuccess } = useAppSelector((store: TAppState) => store.user);
+  const dispatch = useAppThunkDispatch();
 
   const handleSendData = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();

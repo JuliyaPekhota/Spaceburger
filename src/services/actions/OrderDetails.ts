@@ -1,21 +1,16 @@
 import { BASE_URL } from '../../utils/constants';
-import { DELETE_INGREDIENTS } from '../actions/';
-
-export const getOrder = (ingredientIds: Array<string>) => ({ type: GET_ORDER, ingredientIds });
+import * as orderActions from './actionsOrderDetails';
+import { deleteIngredients } from './actionsIngredient';
+import { AppDispatch } from '../../utils/types';
 
 export const GET_ORDER = 'GET_ORDER';
-export const ADD_INGREDIENT = 'ADD_INGREDIENT';
-export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
-
 export const POST_ORDER_NUMBER_REQUEST = 'POST_ORDER_NUMBER_REQUEST';
 export const GET_ORDER_NUMBER_SUCCESS = 'GET_ORDER_NUMBER_SUCCESS';
 export const GET_ORDER_NUMBER_FAILED = 'GET_ORDER_NUMBER_FAILED';
 
 export function getOrderNumber(ids: Array<string>, token: string) {
-    return function(dispatch: any) { 
-      dispatch({
-            type: POST_ORDER_NUMBER_REQUEST
-      });
+    return function(dispatch: AppDispatch) { 
+      dispatch(orderActions.postingOrderNumber());
   
       fetch(`${BASE_URL}orders`, {
         method: 'POST',
@@ -27,27 +22,17 @@ export function getOrderNumber(ids: Array<string>, token: string) {
       })
       .then(response => {
         if (!response.ok) {
-          dispatch({
-            type: GET_ORDER_NUMBER_FAILED
-          });
+          dispatch(orderActions.getOrderNumberFailed());
           throw new Error('Network response was not OK');
         }
         return response.json();
       })
       .then(response => {
-        dispatch({
-            type: GET_ORDER_NUMBER_SUCCESS,
-            value: response.order.number,
-            success: response.success
-        });
-        dispatch({
-          type: DELETE_INGREDIENTS,
-        });  
+        dispatch(orderActions.getOrderNumberSuccess(response.success, response.order.number));
+        dispatch(deleteIngredients()); 
       })
       .catch(error => {
-        dispatch({
-            type: GET_ORDER_NUMBER_FAILED
-        });
+        dispatch(orderActions.getOrderNumberFailed());
         console.error('There has been a problem with fetch operation:', error);
       });
     }

@@ -1,14 +1,12 @@
 import { BrowserRouter as Router } from 'react-router-dom';
-import AppHeader from '../AppHeader/AppHeader';
+import { Header } from '../Header';
 import SwitchRoute from '../SwitchRoute';
 
-const App = () => {
+export const App = () => {
   return (
     <Router>
-      <AppHeader />
+      <Header />
       <SwitchRoute />
     </Router>
   );
 }
-
-export default App;

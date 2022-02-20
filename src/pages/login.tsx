@@ -1,14 +1,14 @@
 import { useState, ChangeEvent } from 'react';
 import { Input, Button }  from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useLocation } from 'react-router-dom';
-import { loginUser } from '../services/actions/UserAuth';
-import { useDispatch } from 'react-redux';
+import { loginUser } from '../services/actions/actionsUser';
+import { useAppDispatch } from '../utils/hooks';
 import { ILocationFrom } from '../utils/types';
 import s from './pages.module.css';
 
 export function LoginPage() {
   const [data, setData] = useState({ email: '', password: '' });
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { pathname } = useLocation<ILocationFrom>();
   const handleSendData = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();

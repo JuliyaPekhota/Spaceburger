@@ -1,9 +1,9 @@
 import { BurgerIcon, ListIcon, ProfileIcon, Logo }  from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import cn from "classnames";
-import s from './AppHeader.module.css';
+import s from './Header.module.css';
 
-const AppHeader = () => {    
+export const Header = () => {    
   const { pathname } = useLocation();
     return (
         <header className={cn(s.header, 'm-10')}>
@@ -39,5 +39,3 @@ const AppHeader = () => {
         </header>
       );
   }
-  
-  export default AppHeader;

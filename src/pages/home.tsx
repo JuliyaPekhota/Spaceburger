@@ -1,26 +1,24 @@
 
 import { useEffect } from 'react';
-import BurgerIngredients from '../components/BurgerIngredients/BurgerIngredients';
-import BurgerConstructor from '../components/BurgerConstructor/BurgerConstructor';
-import { RootState } from '../utils/types';
-import { Loader } from '../components/Loader/Loader';
-
+import { BurgerIngredients } from '../components/BurgerIngredients';
+import { BurgerConstructor }from '../components/BurgerConstructor';
+import { TAppState } from '../services/reducers';
+import { Loader } from '../components/Loader';
+import { useAppThunkDispatch, useAppSelector } from '../utils/hooks';
+import { getIngredients } from '../services/actions';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 
 import "../styles/globals.css";
 import "../styles/fonts.css";
 
-import { useSelector, useDispatch } from 'react-redux';
-import { getIngredients } from '../services/actions';
 
 export const HomePage = () => {
 const { ingredients, 
         ingredientsSuccess, 
         ingredientsRequest, 
-        ingredientsFailed } = useSelector((store: RootState) => store.ingredient);
-
-const dispatch = useDispatch();
+        ingredientsFailed } = useAppSelector((store: TAppState) => store.ingredient);
+const dispatch = useAppThunkDispatch();
 
 useEffect(() => {
   dispatch(getIngredients())

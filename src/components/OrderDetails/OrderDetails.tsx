@@ -1,12 +1,13 @@
 
 import { FC } from 'react';
-import s from './OrderDetails.module.css';
-import { RootState } from '../../utils/types';
+import { TAppState } from '../../services/reducers';
 import { useSelector } from 'react-redux';
 import imageCheckPath from '../../images/check.svg';
 
-const OrderDetails: FC = () => {
-    const { number } = useSelector((store: RootState) => store.order);
+import s from './OrderDetails.module.css';
+
+export const OrderDetails: FC = () => {
+    const { number } = useSelector((store: TAppState) => store.order);
     return (
         <section className={`${s.content} mt-20 mb-20`}>
             <span className={`${s.orderNumber} text text_type_digits-large`}>{number}</span>
@@ -16,5 +17,4 @@ const OrderDetails: FC = () => {
             <span className='text text_type_main-default text_color_inactive'>Дождитесь готовности на орбитальной станции</span>
         </section>
     )
-}           
-export default OrderDetails;
+}

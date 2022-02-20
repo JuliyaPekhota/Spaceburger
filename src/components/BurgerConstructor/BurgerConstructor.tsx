@@ -2,38 +2,38 @@ import { FC, useState, useCallback, useMemo } from 'react';
 import { Button, CurrencyIcon, BurgerIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useHistory } from 'react-router-dom';
-import { RootState, ItemTypes, IIngredient } from '../../utils/types';
-import OrderDetails from '../OrderDetails/OrderDetails';
-import Modal from '../../components/Modal/Modal';
-import { ADD_INGREDIENT_IN_ORDER, 
-         ADD_INGREDIENT_BUN_IN_ORDER, 
-         UPDATE_LOCATION_INGREDIENT_IN_ORDER } from '../../services/actions';
-import { getOrder } from '../../services/actions/OrderDetails';
-import { useSelector, useDispatch } from 'react-redux';
+import { ItemTypes, IIngredient, IDragItem } from '../../utils/types';
+import { OrderDetails } from '../OrderDetails';
+import { Modal } from '../../components/Modal';
+import { ADD_INGREDIENT_IN_ORDER,
+         ADD_INGREDIENT_BUN_IN_ORDER } from '../../services/actions';
+import { TAppState } from '../../services/reducers';
+import { actionUpdatedIngredient, gettingIngredientBun } from '../../services/actions/actionsIngredient';
+import { getOrder } from '../../services/actions/actionsOrderDetails';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { useDrop } from 'react-dnd';
-import IngredientInOrder from '../IngredientInOrder/IngredientInOrder';
+import { IngredientInOrder } from '../IngredientInOrder';
 import { v4 as uuidv4 } from 'uuid';
-import { Loader } from '../Loader/Loader';
-import cn from "classnames";
+import { Loader } from '../Loader';
 
 import s from './BurgerConstructor.module.css';
 
-const BurgerConstructor: FC = () => {
+export const BurgerConstructor: FC = () => {
   const { 
     ingredients, 
     ingredientsInOrder
-  } = useSelector((store: RootState) => store.ingredient);
-  const { orderSuccess, orderRequest } = useSelector((store: RootState) => store.order);
-  const { authorized } = useSelector((store: RootState) => store.user);
+  } = useAppSelector((store: TAppState) => store.ingredient);
+  const { orderSuccess, orderRequest } = useAppSelector((store: TAppState) => store.order);
+  const { authorized } = useAppSelector((store: TAppState) => store.user);
   const history = useHistory();
   const isLoggedIn = authorized;
 
   const [showModal, setshowModal] = useState(false);
   const sum = useMemo(
-    () => ingredientsInOrder.reduce((sum: any, current: any) => current.type === 'bun' ? sum + current.price * 2 : sum + current.price, 0),
+    () => (ingredientsInOrder as IIngredient[]).reduce((sum, { type, price }) => type === 'bun' ? sum + price * 2 : sum + price, 0),
     [ingredientsInOrder]
   );
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const isBunInOrder = useMemo(
     () => ingredientsInOrder.some(({ type }) => type === 'bun'),
@@ -41,34 +41,25 @@ const BurgerConstructor: FC = () => {
   );
 
   const ingredientIds = ingredientsInOrder.map(card => card?._id);
-  
-  const moveIngredient = useCallback((item: any) => {
-    const ingredient = ingredients.filter((card: any) => card._id === item._id)[0];
+
+  const moveIngredient = useCallback((item: IDragItem) => {
+    const ingredient = ingredients.filter((card: IIngredient) => card._id === item._id)[0];
     const idIngredient = uuidv4();
-    dispatch({
-      type: ingredient.type === 'bun' ? ADD_INGREDIENT_BUN_IN_ORDER : ADD_INGREDIENT_IN_ORDER,
-      id: idIngredient,
-      ...item
-    });
+    dispatch(gettingIngredientBun(ingredient.type === 'bun' ? ADD_INGREDIENT_BUN_IN_ORDER : ADD_INGREDIENT_IN_ORDER, idIngredient, item._id));
   },
   [dispatch, ingredients],
   );
 
   const [, drop] = useDrop({
     accept: ItemTypes.Ingredient,
-    drop(itemId) {
-        moveIngredient(itemId);
+    drop(itemId: IDragItem) {
+      moveIngredient(itemId);
     },
   });
 
   const moveInOrder = useCallback((dragIndex: number, hoverIndex: number) => {
-    dispatch({
-      type: UPDATE_LOCATION_INGREDIENT_IN_ORDER,
-      dragIndex,
-      hoverIndex,
-    });
-    },
-    [dispatch],
+        dispatch(actionUpdatedIngredient(dragIndex, hoverIndex));
+    }, [dispatch],
   );
 
  const handleOpenModal = () => {
@@ -79,7 +70,6 @@ const BurgerConstructor: FC = () => {
     history.push("/login");
   }
 };
-
 const handleCloseModal = () => setshowModal(false);
 
 const bunTopBottom = (position: string) => {
@@ -143,4 +133,4 @@ const bunTopBottom = (position: string) => {
   )
 }
   
-export default BurgerConstructor;
+//export default BurgerConstructor;

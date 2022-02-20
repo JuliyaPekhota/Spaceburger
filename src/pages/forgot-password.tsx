@@ -1,15 +1,16 @@
 import { useState, ChangeEvent } from 'react';
 import { Input, Button }  from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useLocation } from 'react-router-dom';
-import { restoreEmail } from '../services/actions/PasswordReset';
-import { RootState } from '../utils/types';
-import { useDispatch, useSelector } from 'react-redux';
+import { restoreEmail } from '../services/actions/User';
+import { TAppState } from '../services/reducers';
+import { useAppThunkDispatch, useAppSelector } from '../utils/hooks';
+
 import s from './pages.module.css';
 
 export function ForgotPassword() {
   const [email, setEmail] = useState('');
-  const { resetPasswordSuccess } = useSelector((store: RootState) => store.passwordReset);
-  const dispatch = useDispatch();
+  const { resetPasswordSuccess } = useAppSelector((store: TAppState) => store.user);
+  const dispatch = useAppThunkDispatch();
 
   const { pathname } = useLocation();
 

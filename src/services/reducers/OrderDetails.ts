@@ -3,16 +3,26 @@ import {
     GET_ORDER_NUMBER_SUCCESS,
     GET_ORDER_NUMBER_FAILED
 } from '../actions/OrderDetails';
+import * as orderActions from '../actions/actionsOrderDetails';
+import { TActions, TActionsCreators } from '../../utils/types';
 
-const initialState = {
+export type TOrderState = {
+  orderRequest: boolean;
+  orderFailed: boolean;
+  orderSuccess: boolean;
+  number: string | null;
+}
+
+const initialState: TOrderState = {
     orderRequest: false,
     orderFailed: false,
     orderSuccess: false,
-    number: null,
-    sum: null
+    number: null
 }
 
-export const orderReducer = (state = initialState, action: any) => {
+export type TOrderAction = TActions<TActionsCreators<typeof orderActions>>;
+
+export const orderReducer = (state = initialState, action: TOrderAction): TOrderState => {
     switch (action.type) {
         case POST_ORDER_NUMBER_REQUEST: {
           return {
@@ -38,8 +48,8 @@ export const orderReducer = (state = initialState, action: any) => {
               orderFailed: true,
           };
         }
-            default: {
-                return state
-            }
+        default: {
+          return state
+        }
       }
 };

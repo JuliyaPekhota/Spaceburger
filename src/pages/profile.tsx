@@ -1,17 +1,20 @@
 import { useState, ChangeEvent, useEffect, MouseEvent } from 'react';
 import { Input, Button }  from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink, Link } from 'react-router-dom';
-import { getInfoUser, patchInfoUser, logoutUser } from '../services/actions/UserAuth';
-import { RootState } from '../utils/types';
-import { useDispatch, useSelector } from 'react-redux';
+import { getInfoUser, patchInfoUser, logoutUser } from '../services/actions/actionsUser';
+import { IRegistryUser } from '../utils/types';
+import { TAppState } from '../services/reducers';
+import { useAppDispatch, useAppSelector } from '../utils/hooks';
+
 import s from './pages.module.css';
 
 export function Profile() {
-  const { getUserInfoSuccess } = useSelector((store: RootState) => store.user);
-  const { user }: any = useSelector((store: RootState) => store.user);
-  const [data, setData] = useState({ email: '', name: '', password: '' });
+  const { getUserInfoSuccess } = useAppSelector((store: TAppState) => store.user);
+  const user = useAppSelector((store: TAppState) => store.user.user) as IRegistryUser;
+
+  const [data, setData] = useState<IRegistryUser>({ email: '', name: '', password: '' });
   const [isEditing, setIsEditing] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(getInfoUser());
@@ -42,26 +45,25 @@ export function Profile() {
   }
 
  return (
-    <> 
-        <div className={`${s.profile} pl-5 pr-5`}>
-            <div className='sidebar'>
-                <nav className='text text_type_main-medium mb-20'>
-                    <NavLink to="/profile">Профиль</NavLink>
-                    <NavLink to="/profile/orders">История заказов</NavLink>
-                    <Link to="/" onClick={handleClickLogout}>
-                        Выход
-                    </Link>
-                </nav>
-                <p className='text text_type_main-default text_color_inactive'>В этом разделе вы можете<br />изменить свои персональные данные</p>
-            </div>
+    <div className={`${s.profile} pl-5 pr-5`}>
+        <div className='sidebar'>
+            <nav className='text text_type_main-medium mb-20'>
+                <NavLink to="/profile">Профиль</NavLink>
+                <NavLink to="/profile/orders">История заказов</NavLink>
+                <Link to="/" onClick={handleClickLogout}>
+                    Выход
+                </Link>
+            </nav>
+            <p className='text text_type_main-default text_color_inactive'>В этом разделе вы можете<br />изменить свои персональные данные</p>
+        </div>
 
-            <div className={s.wrapEditForm}>
-                <form className={`${s.form} mb-20`} onSubmit={handleSendData}>
+        <div className={s.wrapEditForm}>
+            <form className={`${s.form} mb-20`} onSubmit={handleSendData}>
                     <Input
                         type={'text'}
                         placeholder={'Имя'}
                         onChange={handleChange}
-                        value={data.name}
+                        value={data.name ?? ""}
                         name={'name'}
                         icon={'EditIcon'}
                     />
@@ -98,9 +100,7 @@ export function Profile() {
                             </div>
                         </div> 
                     }
-                </form>
-            </div>
+            </form>
         </div>
-    </>    
-)
-}
+    </div>  
+)}

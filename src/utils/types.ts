@@ -1,20 +1,34 @@
-import { rootReducer } from '../services/reducers';
+import { store } from '../services/store';
 
-export interface IDataIngredients {
-  ingredients: IIngredient[];
+export type TActionsKeys<T> = {
+ [K in keyof T] : T[K] extends Function ? K : never
+}[keyof T];
+export type TActionsCreators<T> = Pick<T, TActionsKeys<T>>;
+export type TActions<TCreators> = {
+  [K in keyof TCreators] : TCreators[K] extends (...args: any) => infer U ? U : never
+}[keyof TCreators];
+
+export interface IDragItem {
+  _id: string;
+}
+
+export interface IDropItem {
+  index: number
 }
 
 export interface IIngredient {
   _id: string;
-  id: string;
+  id?: string;
   name: string;
   type: string;
-  price: number;
-  image: string;
   proteins: number;
   fat: number;
   carbohydrates: number;
   calories: number;
+  price: number;
+  image: string;
+  image_mobile: string;
+  image_large: string;
 }
 
 export interface IDataOfIngredient {
@@ -30,14 +44,22 @@ export interface IPasswordData {
 }
 
 export interface IUser {
-  name: string;
   email: string;
+  name: string;
 }
 
 export interface IRegistryUser {
   name?: string;
   password: string;
   email: string;
+}
+
+export interface ILocationModal<T> {
+  pathname: string;
+  search: string;
+  state: T;
+  hash: string;
+  key?: string | undefined;
 }
 
 export interface ILocation {
@@ -50,6 +72,7 @@ export interface ILocation {
 
 export interface ILocationFrom {
   from: string;
+  modal?: string
 }
 
 export interface IToken {
@@ -57,7 +80,7 @@ export interface IToken {
   refreshToken?: string;
 }
 
-export type JWTDeCode  = {
+export type JWTDeCode = {
   iat: number,
   exp: number
 }
@@ -72,8 +95,4 @@ export enum ItemTypes  {
   Ingredient = 'ingredient'
 }
 
-export enum TokenTypes  {
-  Expired = 'jwt expired',
-}
-
-export type RootState = ReturnType<typeof rootReducer>
+export type AppDispatch = typeof store.dispatch;

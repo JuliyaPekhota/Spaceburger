@@ -1,15 +1,15 @@
 import { useState, ChangeEvent } from 'react';
 import { Input, Button }  from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { sendNewPassword } from '../services/actions/PasswordReset';
+import { useAppThunkDispatch } from '../utils/hooks';
+import { sendNewPassword } from '../services/actions/User';
 
 import s from './pages.module.css';
 
 export function ResetPassword() {
   const [data, setData] = useState({ password: '', token: '' });
 
-  const dispatch = useDispatch();
+  const dispatch = useAppThunkDispatch();
 
   const handleSendData = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();

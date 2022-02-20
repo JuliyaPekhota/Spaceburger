@@ -1,6 +1,6 @@
 import { useMemo, useEffect, useCallback, ReactNode } from 'react';
 import ReactDOM from 'react-dom';
-import ModalOverlay from '../ModalOverlay/ModalOverlay';
+import { ModalOverlay } from '../ModalOverlay';
 import { CloseIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './Modal.module.css';
 
@@ -12,7 +12,7 @@ export interface IModal {
   children?: ReactNode;
 }
 
-const Modal = (props: IModal) => {
+export const Modal = (props: IModal) => {
     const container = useMemo(() => document.createElement("div"), []);
 
     useEffect(() => {
@@ -50,6 +50,4 @@ const Modal = (props: IModal) => {
         </ModalOverlay>
       </>
       , container);
-} 
-  
-export default Modal;
+}

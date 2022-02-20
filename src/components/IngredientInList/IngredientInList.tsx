@@ -1,25 +1,27 @@
 import { FC } from 'react';
-import s from './IngredientInList.module.css';
-import { RootState, ItemTypes, IDataOfIngredient } from '../../utils/types';
+import { ItemTypes, IIngredient } from '../../utils/types';
 import { Link, useLocation } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
+import { TAppState } from '../../services/reducers';
 import { Counter, CurrencyIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
-import { OPEN_MODAL_DETAILS } from '../../services/actions/IngredientDetails';
+import { openModalDetails } from '../../services/actions/actionsIngredient';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 
-import { useSelector, useDispatch } from 'react-redux';
+import s from './IngredientInList.module.css';
 
-const IngredientInList: FC<IDataOfIngredient> = ({ _id }) => {
-    const { ingredients, ingredientsInOrder } = useSelector((store: RootState) => store.ingredient);
-    const { name, image, price } = ingredients.filter((card: any) => card._id === _id)[0];
-    const dispatch = useDispatch();
+interface IIngredientInListProps {
+    _id: string;
+}
+
+export const IngredientInList: FC<IIngredientInListProps> = ({ _id }) => {
+    const { ingredients, ingredientsInOrder } = useAppSelector((store: TAppState) => store.ingredient);
+    const { name, image, price } = ingredients.filter((card: IIngredient) => card._id === _id)[0];
+    const dispatch = useAppDispatch();
     const countIngredientInOrder = ingredientsInOrder.filter(item => item._id === _id).length;
     const location = useLocation();
 
     const handleOpenModal = (id: string) => {
-        dispatch({
-            type: OPEN_MODAL_DETAILS,
-            _id: id
-        });
+        dispatch(openModalDetails(id));
     };
  
     const [{ opacity }, drag] = useDrag({
@@ -46,5 +48,3 @@ const IngredientInList: FC<IDataOfIngredient> = ({ _id }) => {
             </Link>    
       )
 }
-          
-export default IngredientInList;  
