@@ -1,16 +1,15 @@
-import { useState, ChangeEvent, useEffect, MouseEvent } from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
 import { Input, Button }  from '@ya.praktikum/react-developer-burger-ui-components';
-import { NavLink, Link } from 'react-router-dom';
-import { getInfoUser, patchInfoUser, logoutUser } from '../services/actions/actionsUser';
-import { IRegistryUser } from '../utils/types';
-import { TAppState } from '../services/reducers';
-import { useAppDispatch, useAppSelector } from '../utils/hooks';
+import { getInfoUser, patchInfoUser } from '../../services/actions/actionsUser';
+import { IRegistryUser } from '../../utils/types';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 
-import s from './pages.module.css';
+import s from './profile.module.css';
+import { MenuProfile } from '../../components/MenuProfile';
 
 export function Profile() {
-  const { getUserInfoSuccess } = useAppSelector((store: TAppState) => store.user);
-  const user = useAppSelector((store: TAppState) => store.user.user) as IRegistryUser;
+  const success = useAppSelector(store=> store.user.getUserInfoSuccess);
+  const user = useAppSelector(store => store.user.user) as IRegistryUser;
 
   const [data, setData] = useState<IRegistryUser>({ email: '', name: '', password: '' });
   const [isEditing, setIsEditing] = useState(false);
@@ -21,10 +20,10 @@ export function Profile() {
   }, [dispatch]);
   
   useEffect(() => {
-    if (getUserInfoSuccess) {
+    if (success) {
         setData(state => ({ ...state, email: user.email, name: user.name }));
     }
-  }, [getUserInfoSuccess, user.email, user.name]);
+  }, [success, user.email, user.name]);
 
   const handleSendData = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,24 +38,10 @@ export function Profile() {
     setData({...data, email: user.email, name: user.name });
     setIsEditing(false);
   }
-  const handleClickLogout = (e: MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-    dispatch(logoutUser());
-  }
 
  return (
     <div className={`${s.profile} pl-5 pr-5`}>
-        <div className='sidebar'>
-            <nav className='text text_type_main-medium mb-20'>
-                <NavLink to="/profile">Профиль</NavLink>
-                <NavLink to="/profile/orders">История заказов</NavLink>
-                <Link to="/" onClick={handleClickLogout}>
-                    Выход
-                </Link>
-            </nav>
-            <p className='text text_type_main-default text_color_inactive'>В этом разделе вы можете<br />изменить свои персональные данные</p>
-        </div>
-
+        <MenuProfile />
         <div className={s.wrapEditForm}>
             <form className={`${s.form} mb-20`} onSubmit={handleSendData}>
                     <Input

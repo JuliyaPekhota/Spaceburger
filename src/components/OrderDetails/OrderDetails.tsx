@@ -1,13 +1,12 @@
 
 import { FC } from 'react';
-import { TAppState } from '../../services/reducers';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../utils/hooks';
 import imageCheckPath from '../../images/check.svg';
 
 import s from './OrderDetails.module.css';
 
 export const OrderDetails: FC = () => {
-    const { number } = useSelector((store: TAppState) => store.order);
+    const number = useAppSelector(store => store.order.number);
     return (
         <section className={`${s.content} mt-20 mb-20`}>
             <span className={`${s.orderNumber} text text_type_digits-large`}>{number}</span>

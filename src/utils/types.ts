@@ -54,12 +54,18 @@ export interface IRegistryUser {
   email: string;
 }
 
-export interface ILocationModal<T> {
+export interface ILocationProp<T> {
   pathname: string;
   search: string;
   state: T;
   hash: string;
   key?: string | undefined;
+}
+
+export interface ILocationProps {
+  modal?: ILocationProp<unknown>;
+  feed?: ILocationProp<unknown>;
+  order?: ILocationProp<unknown>;
 }
 
 export interface ILocation {
@@ -78,6 +84,30 @@ export interface ILocationFrom {
 export interface IToken {
   accessToken?: string;
   refreshToken?: string;
+}
+
+export interface IWsMessage {
+  orders: IWsMessageOrder[];
+  total?: number;
+  totalToday?: number;
+  token?: string;
+}
+
+export interface IWsMessageOrder {
+  _id: string;
+  ingredients: string[];
+  status: string;
+  name: string;
+  createdAt: string;
+  updatedAt: Date;
+  number: number;
+}
+
+export enum EWsStatus {
+  Done = 'done',
+  Pending = 'pending',
+  Created = 'created',
+  Cancel = 'cancel'
 }
 
 export type JWTDeCode = {

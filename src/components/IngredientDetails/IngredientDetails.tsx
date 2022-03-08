@@ -1,7 +1,6 @@
 import { FC, useEffect } from 'react';
 import { useAppThunkDispatch, useAppSelector } from '../../utils/hooks';
 import { IIngredient } from '../../utils/types';
-import { TAppState } from '../../services/reducers';
 import { useParams } from "react-router-dom";
 import { getIngredients } from '../../services/actions';
 
@@ -12,16 +11,16 @@ interface IIngredientDetailsProps {
 }
 
 export const IngredientDetails: FC<IIngredientDetailsProps> = ({ type }) => {
-    const { ingredients, ingredientsSuccess } = useAppSelector((store: TAppState) => store.ingredient);
-    const typeIsPage = type === "page";
+    const { ingredients, ingredientsSuccess } = useAppSelector(store => store.ingredient);
+    const isPage = type === "page";
     const { id } = useParams<{ id?: string }>();
     const dispatch = useAppThunkDispatch();
 
     useEffect(() => {
-        if (typeIsPage) {
+        if (isPage) {
            dispatch(getIngredients())
         }
-      }, [typeIsPage, dispatch]);
+      }, [isPage, dispatch]);
 
     return (
         <>

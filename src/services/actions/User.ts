@@ -8,6 +8,7 @@ export const GET_USER = 'GET_USER';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const PATCH_USER = 'PATCH_USER';
+export const INIT_ORDERS = 'INIT_ORDERS';
 
 export const POST_LOGIN_USER = 'POST_LOGIN_USER';
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
