@@ -6,7 +6,7 @@ import { IWsMessageOrder, EWsStatus } from '../../utils/types';
 import { getIngredients } from '../../services/actions';
 
 import cn from "classnames";
-import s from './feed.module.scss';
+import s from './feed.module.css';
 
 export const Feed = () => {
   const { ingredients } = useAppSelector(store => store.ingredient);
