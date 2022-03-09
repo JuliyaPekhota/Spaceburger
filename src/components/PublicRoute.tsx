@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../utils/hooks';
 import { Route, Redirect, useLocation, RouteProps } from 'react-router-dom';
 import { ILocationFrom } from '../utils/types';
-import { TAppState } from '../services/reducers';
 
 interface IPublicRouteProps extends RouteProps {
   children: ReactNode;
@@ -10,8 +9,7 @@ interface IPublicRouteProps extends RouteProps {
 }
 
 export const PublicRoute = ({ children, type, ...rest }: IPublicRouteProps) => {
-  const { authorized } = useSelector((store: TAppState) => store.user);
-  const isLoggedIn = authorized;
+  const isLoggedIn = useAppSelector(store => store.user.authorized);
   const { pathname, state } = useLocation<ILocationFrom>();
 
  const isPathFromForgotPassword = state?.from === '/forgot-password';

@@ -7,7 +7,6 @@ import { OrderDetails } from '../OrderDetails';
 import { Modal } from '../../components/Modal';
 import { ADD_INGREDIENT_IN_ORDER,
          ADD_INGREDIENT_BUN_IN_ORDER } from '../../services/actions';
-import { TAppState } from '../../services/reducers';
 import { actionUpdatedIngredient, gettingIngredientBun } from '../../services/actions/actionsIngredient';
 import { getOrder } from '../../services/actions/actionsOrderDetails';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
@@ -22,11 +21,10 @@ export const BurgerConstructor: FC = () => {
   const { 
     ingredients, 
     ingredientsInOrder
-  } = useAppSelector((store: TAppState) => store.ingredient);
-  const { orderSuccess, orderRequest } = useAppSelector((store: TAppState) => store.order);
-  const { authorized } = useAppSelector((store: TAppState) => store.user);
+  } = useAppSelector(store => store.ingredient);
+  const { orderSuccess, orderRequest } = useAppSelector(store => store.order);
+  const isLoggedIn = useAppSelector(store => store.user.authorized);
   const history = useHistory();
-  const isLoggedIn = authorized;
 
   const [showModal, setshowModal] = useState(false);
   const sum = useMemo(

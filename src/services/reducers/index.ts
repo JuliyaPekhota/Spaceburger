@@ -17,6 +17,7 @@ import {
 import update from 'immutability-helper';
 import { IIngredient, TActions, TActionsCreators } from '../../utils/types';
 import * as ingredientActions from '../actions/actionsIngredient';
+import { TWsState, wsReducer, TWsAction } from './wsReduser';
 
 type TIngredientState = {
   ingredientsRequest: boolean;
@@ -34,8 +35,8 @@ const initialState: TIngredientState = {
 
     openIngredientId: null,
 
-    ingredients: [] as IIngredient[],
-    ingredientsInOrder: [] as IIngredient[],
+    ingredients: [],
+    ingredientsInOrder: [],
 }
 
 type TIngredientAction = TActions<TActionsCreators<typeof ingredientActions>>;
@@ -128,13 +129,15 @@ export const ingredientsReducer = (state = initialState, action: TIngredientActi
 export type TAppState = {
   ingredient: TIngredientState,
   order: TOrderState,
-  user: TUserState
+  user: TUserState,
+  ws: TWsState,
 }
 
-export type TAppAction = TUserAction | TOrderAction | TIngredientAction;
+export type TAppAction = TUserAction | TOrderAction | TIngredientAction | TWsAction;
   
 export const rootReducer = combineReducers<TAppState>({
     ingredient: ingredientsReducer,
     order: orderReducer,
     user: userReducer,
+    ws: wsReducer,
 });

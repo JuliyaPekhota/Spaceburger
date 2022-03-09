@@ -1,0 +1,124 @@
+.itemFeed {
+    width: 584px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 24px;
+    background: #1C1C21;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.04);
+    border-radius: 40px;
+    margin-top: 16px;
+}
+.itemFeed, .itemFeed a {
+    width: 100%
+}
+.itemFeed:first-child {
+    margin-top: 0;
+}
+.icons {
+    display: flex;
+}
+.iconWrap {
+    display: none;
+    width: 68px;
+    height: 68px;
+    border-radius: 100px;
+    background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
+    padding: 2px;
+    position: relative;
+}
+.iconWrap:nth-child(1) {
+    display: flex;
+    left: 0;
+    z-index: 6;
+}
+.iconWrap:nth-child(2) {
+    display: flex;
+    left: -16px;
+    z-index: 5;
+}
+.iconWrap:nth-child(3) {
+    display: flex;
+    left: -32px;
+    z-index: 4;
+}
+.iconWrap:nth-child(4) {
+    display: flex;
+    left: -48px;
+    z-index: 3;
+}
+.iconWrap:nth-child(5) {
+    display: flex;
+    left: -64px;
+    z-index: 2;
+}
+.iconWrap:nth-child(6) {
+    display: flex;
+    left: -80px;
+    z-index: 1;
+}
+.iconBlackout {
+    justify-content: center;
+    align-items: center;
+}
+
+.iconBlackout::before {
+    content: "";
+    opacity: 0.7;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    z-index: 2;
+    background-color: #131316;
+    border-radius: 100px;
+    width: 64px;
+    height: 64px;
+}
+.iconBlackout .icon {
+    position: relative;
+    z-index: 1;
+}
+.iconBlackWrap {
+    display: flex;
+    width: 64px;
+    height: 64px;
+    background: #131316;
+    border-radius: 100px;
+    justify-content: center;
+    align-items: center;
+}
+.icon {
+    max-width: 120px;
+    max-height: 100%;  
+}
+
+.itemTop {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: 24px;
+}
+.itemBottom {
+    display: flex;
+    padding-top: 24px;
+    justify-content: space-between;
+    width: 100%;
+}
+.itemPrice {
+    align-self: center;
+}
+.itemPrice svg {
+    top: 4px;
+    position: relative;
+}
+.numberOfHiddenPictures {
+    position: absolute;
+    z-index: 2;
+}
+
+.colorBlue {
+    color: #00CCCC;
+}
+.colorRed {
+    color: red;
+}

@@ -5,6 +5,8 @@ import {
   LOGOUT,
   GET_USER,
   PATCH_USER,
+  INIT_ORDERS,
+
   POST_LOGIN_USER,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAILED,
@@ -36,6 +38,7 @@ export const authUser = () => ({ type: AUTHORIZED }) as const;
 export const loginUser = (user: IRegistryUser) => ({ type: LOGIN, user }) as const;
 export const logoutUser = () => ({ type: LOGOUT }) as const;
 export const getInfoUser = () => ({ type: GET_USER }) as const;
+export const initOrders = () => ({ type: INIT_ORDERS }) as const;
 export const patchInfoUser = (user: IRegistryUser) => ({ type: PATCH_USER, user }) as const;
 
 //Login

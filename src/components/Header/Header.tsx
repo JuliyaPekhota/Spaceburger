@@ -18,7 +18,7 @@ export const Header = () => {
                   <span className="ml-2 text text_type_main-default">Конструктор</span>
                 </NavLink>
 
-                <NavLink to="/profile/orders" className='pl-5 pr-5'>
+                <NavLink to="/feed" className='pl-5 pr-5'>
                   <ListIcon type="secondary" />
                   <span className="ml-2 text text_type_main-default">Лента заказов</span>
                 </NavLink>
@@ -29,7 +29,7 @@ export const Header = () => {
               </li>
 
               <li className={s.login}>
-                <NavLink to="/profile" exact={true} className='pl-5 pr-5'>
+                <NavLink to="/profile/" exact={true} className='pl-5 pr-5'>
                   <ProfileIcon type="secondary" />
                   <span className="ml-2 text text_type_main-default">Личный кабинет</span>
                 </NavLink> 

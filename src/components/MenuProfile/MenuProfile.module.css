@@ -1,0 +1,16 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+}
+
+nav a {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    color:#8585AD;
+}
+
+a[class="active"] { 
+    color:#F2F2F3;
+}
