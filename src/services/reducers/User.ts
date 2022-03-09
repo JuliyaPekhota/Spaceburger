@@ -14,6 +14,7 @@ import {
     POST_NEW_PASSWORD_REQUEST, RESPONSE_FAILED_NEW_PASSWORD, RESPONSE_SUCCESS_NEW_PASSWORD
 } from '../actions/User';
 import * as userActions from '../actions/actionsUser';
+import { getAccessToken } from '../../utils/utils';
 import { TActions, TActionsCreators, IUser } from '../../utils/types';
 
 export type TUserState = {
@@ -92,7 +93,10 @@ export type TUserAction = TActions<TActionsCreators<typeof userActions>>;
 export const userReducer = (state = initialState, action: TUserAction): TUserState => {
     switch (action.type) {
         case AUTHORIZED: {
-          return state;
+          return {
+            ...state,
+            accessToken: getAccessToken(),
+          }
         }
         case INIT_USER: {
           return {

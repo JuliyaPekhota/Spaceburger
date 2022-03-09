@@ -1,4 +1,10 @@
-export const NotFound404 = () => {
+import { Link } from 'react-router-dom';
 
-    console.log("NotFound404");
+export const NotFound404 = () => {
+return (
+    <>
+        <h1>404 - Страница не найдена!</h1>
+        <Link className="text text_type_main-default text_color_inactive" to="/">Конструктор &gt;&gt;</Link>
+    </>
+)
 }

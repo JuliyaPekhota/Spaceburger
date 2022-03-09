@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { ItemTypes, IIngredient } from '../../utils/types';
 import { Link, useLocation } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
-import { TAppState } from '../../services/reducers';
 import { Counter, CurrencyIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 import { openModalDetails } from '../../services/actions/actionsIngredient';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
@@ -14,7 +13,7 @@ interface IIngredientInListProps {
 }
 
 export const IngredientInList: FC<IIngredientInListProps> = ({ _id }) => {
-    const { ingredients, ingredientsInOrder } = useAppSelector((store: TAppState) => store.ingredient);
+    const { ingredients, ingredientsInOrder } = useAppSelector(store => store.ingredient);
     const { name, image, price } = ingredients.filter((card: IIngredient) => card._id === _id)[0];
     const dispatch = useAppDispatch();
     const countIngredientInOrder = ingredientsInOrder.filter(item => item._id === _id).length;

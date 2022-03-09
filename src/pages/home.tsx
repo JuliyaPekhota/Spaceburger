@@ -2,7 +2,6 @@
 import { useEffect } from 'react';
 import { BurgerIngredients } from '../components/BurgerIngredients';
 import { BurgerConstructor }from '../components/BurgerConstructor';
-import { TAppState } from '../services/reducers';
 import { Loader } from '../components/Loader';
 import { useAppThunkDispatch, useAppSelector } from '../utils/hooks';
 import { getIngredients } from '../services/actions';
@@ -17,7 +16,7 @@ export const HomePage = () => {
 const { ingredients, 
         ingredientsSuccess, 
         ingredientsRequest, 
-        ingredientsFailed } = useAppSelector((store: TAppState) => store.ingredient);
+        ingredientsFailed } = useAppSelector(store => store.ingredient);
 const dispatch = useAppThunkDispatch();
 
 useEffect(() => {

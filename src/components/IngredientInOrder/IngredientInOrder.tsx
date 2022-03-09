@@ -5,12 +5,11 @@ import { IDataOfIngredient, ItemTypes, TypeElement, IIngredient, IDropItem } fro
 import { actionDeleteIngredientInOrder } from '../../services/actions/actionsIngredient';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
-import { TAppState } from '../../services/reducers';
 import { XYCoord } from 'dnd-core';
 import cn from "classnames";
 
 export const IngredientInOrder: FC<IDataOfIngredient> = ({ index, moveInOrder, position, _id }) => {
-  const { ingredientsInOrder } = useAppSelector((store: TAppState) => store.ingredient);
+  const { ingredientsInOrder } = useAppSelector(store => store.ingredient);
   const { type, name, price, image, id } = ingredientsInOrder.filter((card: IIngredient) => card._id === _id)[0];
 
     const dispatch = useAppDispatch();

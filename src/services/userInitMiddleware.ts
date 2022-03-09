@@ -5,7 +5,8 @@ import {
   LOGOUT,
   GET_USER,
   PATCH_USER,
-  AUTHORIZED
+  AUTHORIZED,
+  INIT_ORDERS
 } from './actions/User';
 import jwtDecode from "jwt-decode";
 import { JWTDeCode } from '../utils/types';
@@ -13,6 +14,7 @@ import { TAppState, TAppAction } from '../services/reducers';
 import { login, logout, getUser, patchUser, updateToken } from './actions/User';
 import { GET_ORDER, getOrderNumber } from './actions/OrderDetails';
 import { TThunkDispatch } from '../utils/hooks';
+import { wsInitOrders } from '../services/actions/actionsWs';
 
 export const userInitMiddleware: Middleware<{}, TAppState> = store => (next: TThunkDispatch)  => (action: TAppAction) => {
   const token = localStorage.getItem('tokens') ?? null;
@@ -71,6 +73,18 @@ export const userInitMiddleware: Middleware<{}, TAppState> = store => (next: TTh
                 }, 1000)
               } else {
                 next(getOrderNumber(action.ingredientIds, accessToken));
+              }
+
+              break;
+            }
+            case INIT_ORDERS: {
+              if (expiredToken) {
+                next(updateToken({refreshToken, accessToken}));
+                setTimeout(() => {
+                  next(wsInitOrders());
+                }, 1000)
+              } else {
+                next(wsInitOrders());
               }
 
               break;

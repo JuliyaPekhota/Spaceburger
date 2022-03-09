@@ -1,7 +1,6 @@
 import { useState, ChangeEvent } from 'react';
 import { Input, Button }  from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { TAppState } from '../services/reducers';
 import { registry } from '../services/actions/User';
 import { useAppThunkDispatch, useAppSelector } from '../utils/hooks';
 
@@ -9,7 +8,7 @@ import s from './pages.module.css';
 
 export function Register() {
   const [data, setData] = useState({ name: '', email: '', password: '' });
-  const { registerSuccess } = useAppSelector((store: TAppState) => store.user);
+  const success = useAppSelector(store => store.user.registerSuccess);
   const dispatch = useAppThunkDispatch();
 
   const handleSendData = (e: ChangeEvent<HTMLFormElement>) => {
@@ -23,7 +22,7 @@ export function Register() {
  return (
   <div className={s.wrapForm}>
      <h2 className="text text_type_main-medium pb-6">Регистрация</h2>
-     {registerSuccess ? 
+     {success ? 
      "Успешно зарегистрирован"
      :
      (<>

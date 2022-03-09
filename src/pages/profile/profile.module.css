@@ -1,22 +1,9 @@
-.wrapForm {
+.profile, .orders {
     display: flex;
-    width: 430px;
-    height: 100vh;
+    width: 1280px;
     margin: 0 auto;
-    flex-direction: column;
-    align-items: center;
     margin-top: 180px;
-}
-.form {
-    width: 480px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-}
-
-.wrapForm a {
-    color: #4C4CFF;
+    gap: 60px;
 }
 
 div[class="input__container"],
@@ -28,18 +15,31 @@ div[class="input pr-6 pl-6 input_type_password input_size_default"],
 div[class="input pr-6 pl-6 input_type_password input_size_default input_status_active"] {
     width: 100%;
 }
-.wrapEditForm {
+.listOrders {
+    width: 840px;
+    height: 690px;
+    margin: -100px 0 50px 0;
+    padding-right: 8px;
+}
+.wrapEditForm, .listOrders {
     display: flex;
     flex-direction: column;
 }
 
-a[class="active"] { 
-    color:#F2F2F3;
+.form {
+    width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
 }
-
 .buttons {
     display: flex;
     width: 100%;
+}
+.profileButton {
+    flex-basis: 50%;
+    text-align: center;
 }
 
 .buttonPrimary {

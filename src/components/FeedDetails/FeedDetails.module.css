@@ -1,0 +1,43 @@
+.feedDetails {
+    display: flex;
+    flex-direction: column;
+    width: 640px;
+    margin: 120px auto 0;
+}
+.status {
+    color: #00CCCC;
+}
+.feedIngredients {
+    overflow-y: scroll;
+    height: 320px;
+}
+.feedIngredient {
+    display: flex;
+    margin: 0 24px 16px 0;
+    justify-content: center;
+    align-items: center;
+}
+.nameIngredient, .date {
+    flex: 1;
+}
+.iconWrap {
+    width: 68px;
+    height: 68px;
+    border-radius: 100px;
+    background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
+    padding: 2px;
+    position: relative;
+}
+.iconBlackWrap {
+    display: flex;
+    width: 64px;
+    height: 64px;
+    background: #131316;
+    border-radius: 100px;
+    justify-content: center;
+    align-items: center;
+}
+.icon {
+    max-width: 120px;
+    max-height: 100%; 
+}
