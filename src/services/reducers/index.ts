@@ -17,7 +17,7 @@ import {
 import update from 'immutability-helper';
 import { IIngredient, TActions, TActionsCreators } from '../../utils/types';
 import * as ingredientActions from '../actions/actionsIngredient';
-import { TWsState, wsReducer, TWsAction } from './wsReduser';
+import { TWsState, wsReducer, TWsAction } from './wsReducer';
 
 type TIngredientState = {
   ingredientsRequest: boolean;
@@ -55,7 +55,7 @@ export const ingredientsReducer = (state = initialState, action: TIngredientActi
         return { 
             ...state, 
             ingredients: action.ingredients, 
-            ingredientsSuccess: action.success,
+            ingredientsSuccess: true,
             ingredientsRequest: false, 
         };
       }
@@ -65,7 +65,7 @@ export const ingredientsReducer = (state = initialState, action: TIngredientActi
             ingredientsSuccess: false,
             ingredientsRequest: false,
             ingredientsFailed: true,
-              };
+        };
       }
       case ADD_INGREDIENT_IN_ORDER: {
         return {

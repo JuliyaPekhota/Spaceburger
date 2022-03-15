@@ -6,6 +6,7 @@ import { Counter, CurrencyIcon }  from '@ya.praktikum/react-developer-burger-ui-
 import { openModalDetails } from '../../services/actions/actionsIngredient';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 
+import cn from "classnames";
 import s from './IngredientInList.module.css';
 
 interface IIngredientInListProps {
@@ -32,13 +33,13 @@ export const IngredientInList: FC<IIngredientInListProps> = ({ _id }) => {
     });
 
       return (    
-            <Link onClick={() => handleOpenModal(_id)} key={_id}
+            <Link id={`link_${_id}`} onClick={() => handleOpenModal(_id)} key={_id}
                   to={{
                         pathname: `/ingredients/${_id}`,
                         state: { modal: location }
                   }}
             >
-                <div ref={drag} style={{ opacity }} className={`${s.card} pr-4 pl-4`}>
+                <div ref={drag} style={{ opacity }} id={`card_${_id}`} className={cn(s.card, "pr-4 pl-4")}>
                     {countIngredientInOrder > 0 && <Counter count={countIngredientInOrder} size='default' />}
                     <img src={image} alt={name} />
                     <span className={`${s.price} mt-1 mb-1 text text_type_digits-default`}>{price} <CurrencyIcon type="primary" /></span>

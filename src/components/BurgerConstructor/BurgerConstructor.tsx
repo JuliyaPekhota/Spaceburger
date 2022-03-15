@@ -15,6 +15,7 @@ import { IngredientInOrder } from '../IngredientInOrder';
 import { v4 as uuidv4 } from 'uuid';
 import { Loader } from '../Loader';
 
+import cn from "classnames";
 import s from './BurgerConstructor.module.css';
 
 export const BurgerConstructor: FC = () => {
@@ -88,8 +89,8 @@ const bunTopBottom = (position: string) => {
       ) : null
       }
 
-      <section className={`${s.root} pt-25`}>
-        <div ref={drop} className={`${s.content} mb-10`}>
+      <section className={cn(s.root, 'pt-25')}>
+        <div ref={drop} className={cn(s.content, 'mb-10')} id="constructor">
           {ingredientsInOrder.length > 0 
           ?
           (<>
@@ -100,7 +101,7 @@ const bunTopBottom = (position: string) => {
               autoHeight={true}
               autoHeightMin={72}
               autoHeightMax={425}
-              className={`${s.contentInScroll}`}>
+              >
                 {ingredientsInOrder
                 .map((ingredient: IIngredient, i:number) => ingredient.type !== 'bun' &&
                   <IngredientInOrder key={ingredient.id} moveInOrder={moveInOrder} index={i} _id={ingredient._id} />
@@ -117,6 +118,7 @@ const bunTopBottom = (position: string) => {
                   size="medium" 
                   onClick={handleOpenModal}
                   disabled={!isBunInOrder}
+                  name="buttonOrder"
                 >
                   Оформить заказ
                 </Button>
