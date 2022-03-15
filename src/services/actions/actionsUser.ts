@@ -79,11 +79,11 @@ export const successRegistry = (success: boolean, accessToken: string, refreshTo
 //Restore Email
 export const failedRestoreEmail = () => ({ type: RESPONSE_FAILED_PASSWORD }) as const;
 export const postingPasswordRequest = () => ({ type: POST_PASSWORD_REQUEST }) as const;
-export const successRestoreEmail = (massage: string, success: boolean) => 
-({ type: RESPONSE_SUCCESS_PASSWORD, massage, success }) as const;
+export const successRestoreEmail = (message: string, success: boolean) => 
+({ type: RESPONSE_SUCCESS_PASSWORD, message, success }) as const;
 
 // Send New Password
 export const failedNewPassword = () => ({ type: RESPONSE_FAILED_NEW_PASSWORD }) as const;
 export const postingNewPassword = () => ({ type: POST_NEW_PASSWORD_REQUEST }) as const;
-export const successNewPassword = (massage: string, success: boolean) => 
-({ type: RESPONSE_SUCCESS_NEW_PASSWORD, massage, success }) as const;
+export const successNewPassword = (message: string, success: boolean) => 
+({ type: RESPONSE_SUCCESS_NEW_PASSWORD, message, success }) as const;

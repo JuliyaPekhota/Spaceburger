@@ -37,7 +37,7 @@ export function LoginPage() {
               value={data.password}
               name={'password'}
             />
-            <Button type="primary" size="medium">
+            <Button type="primary" size="medium" name='buttonLogin'>
               Войти
             </Button>
           </form>

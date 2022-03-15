@@ -41,7 +41,7 @@ export const Modal = (props: IModal) => {
       <>
         <ModalOverlay onOverlayClick={props.onClose}>
           <div className={`${s.modal} pt-10 pl-10 pb-15 pr-10`}>
-            <div className={`${s.close} pt-15 pr-10`} onClick={props.onClose}>
+            <div id="closeBtn" className={`${s.close} pt-15 pr-10`} onClick={props.onClose}>
               <CloseIcon type="primary" />
             </div>
             <h1 className={`${s.head} text text_type_main-large`}>{props.header}</h1>

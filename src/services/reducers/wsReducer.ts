@@ -48,7 +48,7 @@ import {
       case WS_GET_MESSAGE:
         return {
           ...state,
-          messages: state.messages.length ? [...state.messages, { ...action.message }] : [{ ...action.message }]
+          messages: state.messages && state.messages.length ? [...state.messages, { ...action.message }] : [{ ...action.message }]
         };
   
       default:

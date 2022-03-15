@@ -21,6 +21,7 @@ export const FeedDetails: FC<IFeedDetailsProps> = ({ type, variant }) => {
     const { id } = useParams<{ id: string }>();
     const dispatch = useAppThunkDispatch();
     const messages = useAppSelector(store => store.ws.messages || []);
+    
     const isPage = type === "page";
     let orderDetail: IWsMessageOrder[] = [];
     let selectIngredient: IIngredient[] = [];
@@ -46,7 +47,7 @@ export const FeedDetails: FC<IFeedDetailsProps> = ({ type, variant }) => {
             }
           };
         },
-     [isPage, dispatch]
+     [isPage, dispatch, variant]
     );
 
     if (orderDetail && orderDetail.length > 0 && ingredients && ingredients.length > 0) {
