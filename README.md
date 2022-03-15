@@ -1,6 +1,6 @@
 # GitHub Pages
 
-Project Burger Constructor https://juliyapekhota.github.io
+Project Burger Constructor https://juliyapekhota.github.io/react-burger/
 
 # Yandex Server
 
