@@ -1,3 +1,13 @@
+# GitHub Pages
+
+Project Burger Constructor https://juliyapekhota.github.io/react-burger/
+
+# Yandex Server
+
+Project Burger Constructor burger.project.students.nomoredomains.work.
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
