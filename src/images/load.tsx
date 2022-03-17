@@ -1,12 +1,16 @@
+import { FCSvg } from "../utils/types";
+
+export const LoadSvg: FCSvg = props => (
 <svg version="1.1" 
   id="L4" 
   xmlns="http://www.w3.org/2000/svg" 
-  xmlns:xlink="http://www.w3.org/1999/xlink" 
   x="0px" 
   y="0px"
   width="50"
   height="50"
-  viewBox="0 0 50 100" enable-background="new 0 0 0 0" xml:space="preserve">
+  viewBox="0 0 50 100"
+  enableBackground="new 0 0 0 0"
+  {...props}>
   <circle fill="#fff" stroke="none" cx="6" cy="50" r="6">
     <animate
       attributeName="opacity"
@@ -32,3 +36,4 @@
       begin="0.3"/>     
   </circle>
 </svg>
+);

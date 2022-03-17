@@ -1,12 +1,12 @@
 import { FC } from 'react';
-import ImageLoad from '../../images/load.svg';
+import { LoadSvg } from '../../images/load';
 
 import s from './Loader.module.css';
 
 export const Loader: FC = () => {
     return (
         <div className={s.wrap}>
-            Загрузка <ImageLoad />
+            Загрузка <LoadSvg />
         </div>
     )
 }
