@@ -1,4 +1,5 @@
 import { store } from '../services/store';
+import { FC, SVGProps } from "react";
 
 export type TActionsKeys<T> = {
  [K in keyof T] : T[K] extends Function ? K : never
@@ -126,3 +127,5 @@ export enum ItemTypes  {
 }
 
 export type AppDispatch = typeof store.dispatch;
+
+export type FCSvg<T = unknown> = FC<SVGProps<SVGSVGElement> & T>;
