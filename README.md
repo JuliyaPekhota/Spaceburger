@@ -11,7 +11,7 @@
 - Сypress 
 - Jest
 
-[Demo on GitHub Pages](https://juliyapekhota.github.io/react-burger/)\
+[Demo on GitHub Pages](https://juliyapekhota.github.io/Spaceburger/)\
 [Demo on Yandex Server](https://burger.project.students.nomoredomains.work/)
 
 This project was bootstrapped with Create React App.
